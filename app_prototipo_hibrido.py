@@ -5,255 +5,197 @@ from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 from qiskit.visualization import plot_histogram
 
-st.set_page_config(
-    page_title="Prototipo híbrido clásico-cuántico",
-    page_icon="🔗",
-    layout="wide",
-)
+st.set_page_config(page_title="Entanglert", page_icon="", layout="wide")
 
-st.title("Prototipo híbrido clásico-cuántico")
-st.caption(
-    "Simulación didáctica de tres nodos distribuidos, mensajes contradictorios "
-    "y correlaciones de un estado GHZ."
-)
+# ---------- Funciones ----------
+def construir_circuito(base, intervencion_c):
+    # q0 = A, q1 = B, q2 = C
+    qc = QuantumCircuit(3, 3)
+    qc.h(0)
+    qc.cx(0, 1)
+    qc.cx(0, 2)  # prepara el estado GHZ
+    if intervencion_c:
+        qc.x(2)  # operación Pauli-X sobre el qubit asignado a C
+    if base == "X":
+        # Medir en X equivale a aplicar H y luego medir en Z.
+        qc.h(0)
+        qc.h(1)
+        qc.h(2)
+    qc.measure([0, 1, 2], [0, 1, 2])
+    return qc
 
-st.warning(
-    "Es una simulación de software. Las aristas del grafo representan visualmente "
-    "la participación de los nodos en un estado cuántico compartido; no representan "
-    "una red cuántica física ni garantizan detectar o identificar por sí solas al atacante."
-)
 
-# ------------------------- Controles -------------------------
-st.sidebar.header("Configuración del experimento")
-ataque_clasico = st.sidebar.checkbox(
-    "C envía decisiones contradictorias a A y B", value=True
-)
-alteracion_cuantica = st.sidebar.checkbox(
-    "Aplicar una operación X al qubit de C", value=False
-)
-base_medicion = st.sidebar.radio(
-    "Base de medición", ["Z (computacional)", "X (Hadamard + medición)"]
-)
-shots = st.sidebar.slider("Número de mediciones (shots)", 100, 3000, 1000, 100)
-ejecutar = st.sidebar.button("Ejecutar experimento", type="primary")
-
-# Para que la app también muestre un resultado inicial al abrirse.
-if "run_experiment" not in st.session_state:
-    st.session_state.run_experiment = True
-if ejecutar:
-    st.session_state.run_experiment = True
-
-# ------------------------- Grafo de la red -------------------------
-def dibujar_red(ataque_clasico, alteracion_cuantica):
-    G = nx.Graph()
-    G.add_nodes_from(["A", "B", "C"])
-    G.add_edges_from([("A", "B"), ("A", "C"), ("B", "C")])
-
-    posiciones = {"A": (-1.0, 0.0), "C": (0.0, 0.85), "B": (1.0, 0.0)}
-    fig, ax = plt.subplots(figsize=(6.2, 3.8))
-    nx.draw_networkx_edges(
-        G, posiciones, ax=ax, width=2.0, edge_color="#64748b", alpha=0.85
-    )
+def dibujar_red(contradiccion, intervencion_c):
+    grafo = nx.Graph()
+    grafo.add_nodes_from(["A", "B", "C"])
+    grafo.add_edges_from([("A", "B"), ("A", "C"), ("B", "C")])
+    pos = {"A": (-1, 0), "C": (0, 0.85), "B": (1, 0)}
+    fig, ax = plt.subplots(figsize=(6, 3.7))
+    nx.draw_networkx_edges(grafo, pos, ax=ax, width=2, edge_color="#94a3b8")
     nx.draw_networkx_nodes(
-        G, posiciones, ax=ax, node_size=2300,
-        node_color=["#bfdbfe", "#bfdbfe", "#fecaca"], edgecolors="#334155",
-        linewidths=1.5,
+        grafo, pos, ax=ax, node_size=2100,
+        node_color=["#bfdbfe", "#fecaca", "#bfdbfe"],
+        edgecolors="#475569", linewidths=1.4
     )
-    nx.draw_networkx_labels(
-        G, posiciones, ax=ax, font_size=16, font_weight="bold", font_color="#0f172a"
-    )
-
-    ax.text(-1.0, -0.28, "Nodo A", ha="center", fontsize=10)
-    ax.text(1.0, -0.28, "Nodo B", ha="center", fontsize=10)
-    ax.text(0.0, 1.12, "Nodo C", ha="center", fontsize=10, color="#b91c1c")
-
-    if ataque_clasico:
-        ax.annotate(
-            "decisión = 1", xy=(-0.72, 0.35), xytext=(-1.15, 0.58),
-            arrowprops=dict(arrowstyle="->", color="#2563eb", lw=1.8),
-            fontsize=9, color="#1d4ed8", ha="center",
-        )
-        ax.annotate(
-            "decisión = 0", xy=(0.72, 0.35), xytext=(1.12, 0.58),
-            arrowprops=dict(arrowstyle="->", color="#dc2626", lw=1.8),
-            fontsize=9, color="#b91c1c", ha="center",
-        )
-        ax.text(
-            0, -0.62, "Contradicción clásica detectada",
-            ha="center", fontsize=10, color="#b91c1c", fontweight="bold"
-        )
+    nx.draw_networkx_labels(grafo, pos, ax=ax, font_size=15, font_weight="bold")
+    ax.text(-1, -0.28, "Nodo A", ha="center", fontsize=10)
+    ax.text(1, -0.28, "Nodo B", ha="center", fontsize=10)
+    ax.text(0, 1.12, "Nodo C", ha="center", fontsize=10, color="#b91c1c")
+    if contradiccion:
+        ax.annotate("‘Sí’ (1)", xy=(-0.48, 0.35), xytext=(-1.0, 0.56),
+                    arrowprops=dict(arrowstyle="->", color="#2563eb", lw=1.8),
+                    fontsize=10, color="#1d4ed8", ha="center")
+        ax.annotate("‘No’ (0)", xy=(0.48, 0.35), xytext=(1.0, 0.56),
+                    arrowprops=dict(arrowstyle="->", color="#dc2626", lw=1.8),
+                    fontsize=10, color="#b91c1c", ha="center")
+        ax.text(0, -0.58, "C envía mensajes contradictorios", ha="center",
+                fontsize=9, color="#b91c1c", fontweight="bold")
     else:
-        ax.text(
-            0, -0.62, "Mensajes clásicos consistentes",
-            ha="center", fontsize=10, color="#166534", fontweight="bold"
-        )
-
-    if alteracion_cuantica:
-        ax.text(
-            0, -0.86, "Operación X aplicada al qubit de C",
-            ha="center", fontsize=9, color="#7c3aed"
-        )
-
-    ax.set_title("Red distribuida (NetworkX)", fontsize=13, pad=12)
+        ax.text(0, -0.58, "No se configuró contradicción clásica", ha="center",
+                fontsize=9, color="#166534")
+    if intervencion_c:
+        ax.text(0, -0.83, "Intervención X en el qubit de C", ha="center",
+                fontsize=9, color="#7c3aed")
+    ax.set_title("Los tres nodos", fontsize=13, pad=10)
     ax.axis("off")
     fig.tight_layout()
     return fig
 
 
-# ------------------------- Circuito GHZ -------------------------
-def construir_circuito(base, ataque):
-    # q0 = A, q1 = B, q2 = C
-    qc = QuantumCircuit(3, 3)
-    qc.h(0)
-    qc.cx(0, 1)
-    qc.cx(0, 2)
-
-    if ataque:
-        # Intervención de ejemplo sobre el qubit asociado a C.
-        qc.x(2)
-
-    if base == "X (Hadamard + medición)":
-        # Cambia la base de medición de X a Z mediante H antes de medir.
-        qc.h(0)
-        qc.h(1)
-        qc.h(2)
-
-    qc.measure([0, 1, 2], [0, 1, 2])
-    return qc
-
-
-def analizar_conteos(counts):
+def discrepancias_z(counts):
     total = sum(counts.values())
-    # Qiskit imprime los bits clásicos en orden c2 c1 c0.
-    # Convertimos cada cadena a (A, B, C) = (c0, c1, c2).
-    registros = []
-    for cadena, frecuencia in counts.items():
-        bits = cadena.replace(" ", "")[::-1]
-        if len(bits) >= 3:
-            a, b, c = int(bits[0]), int(bits[1]), int(bits[2])
-            registros.append((a, b, c, frecuencia))
-
-    # En la base Z, el estado GHZ ideal produce 000 o 111.
-    # Si se aplica X a C, produce 001 o 110, por lo que C difiere de A y B.
-    if total == 0:
+    if not total:
         return 0.0, 0.0, 0.0
+    ab = ac = bc = 0
+    for cadena, frecuencia in counts.items():
+        bits = cadena.replace(" ", "")[::-1]  # orden A, B, C
+        a, b, c = map(int, bits[-3:])
+        ab += frecuencia * (a != b)
+        ac += frecuencia * (a != c)
+        bc += frecuencia * (b != c)
+    return ab / total, ac / total, bc / total
 
-    discrepancia_ab = sum(f for a, b, c, f in registros if a != b) / total
-    discrepancia_ac = sum(f for a, b, c, f in registros if a != c) / total
-    discrepancia_bc = sum(f for a, b, c, f in registros if b != c) / total
-    return discrepancia_ab, discrepancia_ac, discrepancia_bc
 
+# ---------- Encabezado ----------
+st.title("E N T A N G L E R T")
+st.caption("Explora qué ocurre con tres nodos cuando aparecen mensajes contradictorios o se interviene un qubit.")
+with st.expander("ⓘ Antes de empezar: ¿qué representa esta simulación?", expanded=False):
+    st.write("**NetworkX** dibuja los nodos y los mensajes clásicos. **Qiskit** simula tres qubits preparados en un estado GHZ y mide sus resultados.")
+    st.info("Es una simulación de software, no una red cuántica física. Una discrepancia puede generar una alerta, pero no demuestra por sí sola quién la causó.")
 
-# ------------------------- Diseño de la página -------------------------
-col_red, col_circuito = st.columns([1, 1.25], gap="large")
+# ---------- Controles compactos con ayuda contextual ----------
 
-with col_red:
-    st.subheader("1. Participantes y comunicación")
-    st.pyplot(
-        dibujar_red(ataque_clasico, alteracion_cuantica),
-        use_container_width=True,
+st.sidebar.header("Experimento")
+st.sidebar.caption("Activa solo los cambios que quieras probar")
+
+# Checkbox e ícono en una misma fila
+col_check, col_info = st.sidebar.columns([0.88, 0.12])
+
+with col_check:
+    contradiccion = st.checkbox(
+        "C envía mensajes contradictorios",
+        value=True
     )
-    st.markdown(
-        "- **A y B:** reciben decisiones de C.\n"
-        "- **C:** puede enviar mensajes contradictorios.\n"
-        "- **Estado GHZ:** los tres qubits se preparan en un estado entrelazado "
-        "para estudiar correlaciones entre mediciones."
+
+with col_info:
+    with st.popover(""):
+        st.markdown("**Contradicción clásica**")
+        st.write(
+            "C le dice ‘sí’ (1) a A y ‘no’ (0) a B. "
+            "Como las instrucciones no coinciden, A y B "
+            "pueden detectar que recibieron información diferente."
+        )
+
+
+col_check_x, col_info_x = st.sidebar.columns([0.88, 0.12])
+
+with col_check_x:
+    intervencion_c = st.checkbox(
+        "Intervenir el qubit de C con X",
+        value=False
     )
 
-with col_circuito:
-    st.subheader("2. Preparación y medición cuántica")
-    qc_preview = construir_circuito(base_medicion, alteracion_cuantica)
-    st.code(qc_preview.draw(output="text"), language="text")
-    st.caption(
-        "Circuito de tres qubits: H y dos CNOT preparan el estado GHZ. "
-        "La operación X opcional modela una intervención sobre el qubit de C. "
-        "La medición en X se implementa aplicando H antes de medir."
-    )
+with col_info_x:
+    with st.popover("ⓘ"):
+        st.markdown("**Una operación cuántica, no un mensaje**")
+        st.write(
+            "La puerta X cambia |0⟩ por |1⟩ y |1⟩ por |0⟩. "
+            "Aquí se aplica al qubit asociado a C para estudiar "
+            "cómo cambia el resultado de la medición. Es una "
+            "intervención controlada del experimento; no representa "
+            "por sí sola a un atacante real."
+        )
+
+base_label = st.sidebar.radio("Cómo medir los qubits", ["Z · medición directa", "X · medir en otra base"], index=0)
+base = "Z" if base_label.startswith("Z") else "X"
+with st.sidebar.popover(""):
+    st.markdown("**Z · medición directa**")
+    st.write("Se mide el qubit directamente y se obtiene 0 o 1. Es como leer el valor en la base computacional.")
+    st.markdown("**X · otra perspectiva**")
+    st.write("Antes de medir, el circuito aplica una puerta Hadamard (H) a cada qubit. Después se mide y se estudian las correlaciones desde la base X. No es ‘más medición’: es medir de otra manera.")
+
+shots = st.sidebar.slider("Repeticiones del experimento", 100, 3000, 1000, 100)
+with st.sidebar.popover(""):
+    st.write("También se llaman *shots*. El circuito se ejecuta muchas veces con la misma configuración. Con 1000 repeticiones, por ejemplo, se obtienen 1000 resultados para contar patrones. Más repeticiones suelen dar frecuencias más estables, pero no hacen que la simulación sea más ‘cuántica’.")
+
+ejecutar = st.sidebar.button("▶ Ejecutar experimento", type="primary", use_container_width=True)
+
+# ---------- Vista principal ----------
+red_col, quantum_col = st.columns([1, 1.15], gap="large")
+with red_col:
+    st.subheader("1. La red")
+    st.pyplot(dibujar_red(contradiccion, intervencion_c), use_container_width=True)
+    st.caption("El dibujo representa participantes y mensajes clásicos; las líneas no son canales cuánticos físicos.")
+with quantum_col:
+    st.subheader("2. El circuito cuántico")
+    circuito_preview = construir_circuito(base, intervencion_c)
+    st.code(circuito_preview.draw(output="text"), language="text")
+    with st.expander("ⓘ ¿Cómo leer este circuito?"):
+        st.write("Cada línea horizontal representa un qubit: A, B o C. H prepara una superposición; las puertas CX enlazan los qubits y preparan el estado GHZ. La X opcional interviene el qubit de C. Las cajas de medición convierten el resultado en bits clásicos.")
 
 st.divider()
-st.subheader("3. Resultado del experimento")
-
-if st.session_state.run_experiment:
-    qc = construir_circuito(base_medicion, alteracion_cuantica)
+st.subheader("3. Resultado")
+if ejecutar:
+    circuito = construir_circuito(base, intervencion_c)
     simulador = AerSimulator()
-    circuito_compilado = transpile(qc, simulador)
-    resultado = simulador.run(circuito_compilado, shots=shots).result()
-    counts = resultado.get_counts()
+    with st.spinner("Ejecutando las mediciones..."):
+        compilado = transpile(circuito, simulador)
+        counts = simulador.run(compilado, shots=shots).result().get_counts()
+    st.success("¡Experimento terminado!")
 
-    m1, m2, m3 = st.columns(3)
-    if base_medicion == "Z (computacional)":
-        d_ab, d_ac, d_bc = analizar_conteos(counts)
-        m1.metric("Discrepancia A–B", f"{d_ab:.1%}")
-        m2.metric("Discrepancia A–C", f"{d_ac:.1%}")
-        m3.metric("Discrepancia B–C", f"{d_bc:.1%}")
-        st.caption(
-            "En la base Z, el GHZ ideal produce resultados iguales para A, B y C. "
-            "La discrepancia mide con qué frecuencia una pareja obtiene bits distintos."
-        )
+    if base == "Z":
+        d_ab, d_ac, d_bc = discrepancias_z(counts)
+        c1, c2, c3 = st.columns(3)
+        c1.metric("A frente a B", f"{d_ab:.1%}")
+        c2.metric("A frente a C", f"{d_ac:.1%}")
+        c3.metric("B frente a C", f"{d_bc:.1%}")
+        with st.expander("ⓘ ¿Qué significa ‘discrepancia’?"):
+            st.write("Es la proporción de repeticiones en que dos nodos obtuvieron bits distintos. En la base Z, el GHZ ideal sin intervención produce 000 o 111, por lo que los tres bits coinciden. La operación X sobre C produce un patrón donde C difiere de A y B.")
     else:
-        # En la base X, para GHZ ideal la paridad de los tres bits es par.
-        # Una X aplicada a C conmuta con mediciones X, por lo que no se espera que
-        # esta operación concreta cambie el patrón de medición X.
         total = sum(counts.values())
-        odd_parity = 0
-        for cadena, frecuencia in counts.items():
-            bits = cadena.replace(" ", "")
-            if sum(int(bit) for bit in bits) % 2 == 1:
-                odd_parity += frecuencia
-        parity_error = odd_parity / total if total else 0.0
-        m1.metric("Paridad impar observada", f"{parity_error:.1%}")
-        m2.metric("Mediciones", f"{total}")
-        m3.metric("Base elegida", "X")
-        st.caption(
-            "Para el GHZ ideal, las mediciones en X tienen paridad global par. "
-            "La operación X en C conmuta con esta medición y no tiene por qué "
-            "ser visible en esta base; comparar bases ayuda a caracterizar la intervención."
-        )
+        impar = sum(freq for cadena, freq in counts.items()
+                    if sum(int(b) for b in cadena.replace(" ", "")) % 2 == 1)
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Resultados obtenidos", f"{total:,}")
+        c2.metric("Paridad impar", f"{impar / total:.1%}" if total else "—")
+        c3.metric("Base usada", "X")
+        with st.expander("ⓘ ¿Qué significa paridad?"):
+            st.write("Se suman los tres bits de cada resultado. Si la suma es impar (por ejemplo, 001), cuenta como paridad impar. En este circuito GHZ ideal, medir los tres qubits en X permite comprobar una correlación global; la puerta X en C no tiene por qué cambiar esta prueba concreta.")
 
     hist_fig = plot_histogram(counts)
     st.pyplot(hist_fig, use_container_width=True)
+    with st.expander("Ver conteos exactos"):
+        st.json(dict(sorted(counts.items())))
 
-    st.markdown("**Conteos de medición**")
-    st.json(dict(sorted(counts.items())))
-
-    # Regla híbrida didáctica: contradicción clásica tiene prioridad.
-    if ataque_clasico:
-        st.error(
-            "DECISIÓN: RECHAZAR LA RONDA — se detectaron decisiones clásicas contradictorias."
-        )
-        explicacion = (
-            "La contradicción entre los mensajes de C basta para rechazar esta ronda "
-            "en la regla didáctica. El resultado cuántico se registra como evidencia adicional."
-        )
-    elif alteracion_cuantica and base_medicion == "Z (computacional)":
-        st.warning(
-            "DECISIÓN: PENDIENTE DE VERIFICACIÓN — se observa una intervención cuántica en la prueba Z."
-        )
-        explicacion = (
-            "La intervención X sobre el qubit C altera las correlaciones esperadas en Z. "
-            "Esto no identifica por sí solo quién causó la alteración."
-        )
+    st.markdown("#### Lectura del escenario")
+    if contradiccion:
+        st.error("**Alerta clásica:** A y B recibieron decisiones distintas de C. La regla demostrativa rechaza esta ronda por contradicción.")
+    elif intervencion_c and base == "Z":
+        st.warning("**Resultado cuántico para revisar:** la intervención X cambia el patrón esperado en la base Z. Esto no identifica automáticamente quién causó el cambio.")
     else:
-        st.success(
-            "DECISIÓN: ACEPTAR PROVISIONALMENTE — no se detectó contradicción clásica en esta configuración."
-        )
-        explicacion = (
-            "La aceptación es provisional y depende de los controles incluidos en este ejemplo. "
-            "No equivale a una garantía formal de seguridad."
-        )
-    st.write(explicacion)
-
+        st.success("**Sin contradicción clásica configurada.** Revisa el histograma y las métricas para interpretar el resultado cuántico de este escenario.")
 else:
-    st.info("Configura los controles de la barra lateral y pulsa «Ejecutar experimento».")
+    st.info("Elige la configuración de la izquierda y pulsa **Ejecutar experimento** para generar los resultados.")
 
-st.divider()
-st.subheader("4. Cómo interpretar la visualización")
-st.markdown(
-    """
-    - **NetworkX** muestra los participantes y la contradicción clásica entre mensajes.
-    - **Qiskit** muestra el circuito que prepara y mide el estado GHZ de tres qubits.
-    - **Histograma** muestra cuántas veces se obtuvo cada resultado de medición.
-    - **Discrepancias** resumen diferencias entre bits medidos; son señales del experimento,
-      no una identificación automática de un nodo malicioso.
-    """
-)
+with st.expander("ⓘ Glosario breve"):
+    st.markdown("- **Qubit:** unidad básica de información cuántica simulada.\n- **GHZ:** estado entrelazado de tres qubits usado para estudiar correlaciones.\n- **Hadamard (H):** puerta que cambia la base de medición.\n- **X:** puerta que intercambia los estados |0⟩ y |1⟩.\n- **Shot:** una repetición del circuito.\n- **Histograma:** barras que muestran cuántas veces apareció cada resultado.")
