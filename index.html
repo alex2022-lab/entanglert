@@ -1,7 +1,7 @@
 <div class="deck-viewport">
   <button id="btn-prev" class="nav-arrow nav-left" disabled title="Diapositiva anterior" aria-label="Anterior">&lt;</button>
   <button id="btn-next" class="nav-arrow nav-right" title="Siguiente diapositiva" aria-label="Siguiente">&gt;</button>
-  <div id="slide-counter" class="slide-counter">01 / 04</div>
+  <div id="slide-counter" class="slide-counter">01 / 07</div>
 
   <div id="deck-container" class="deck-container" style="transform: translateX(0vw)">
     <!-- ================================================================
@@ -12,76 +12,108 @@
         <div class="cover-kicker">SIMULACIÓN CUÁNTICA · SISTEMAS DISTRIBUIDOS</div>
         <h1 class="cover-title">E N T A N G L E R T</h1>
         <p class="cover-subtitle">Correlaciones de Hardy y acuerdo bizantino</p>
-        <p class="cover-description">Una exploración interactiva de la relación entre mediciones cuánticas y consistencia de mensajes en una red distribuida.</p>
-        <p class="cover-hint">Usa la flecha derecha para comenzar →</p>
+        <p class="cover-description">Explora una red de tres nodos, desafía la comunicación con mensajes contradictorios y examina las correlaciones de Hardy en busca de condiciones que permitan verificar la consistencia del sistema.</p>
+        <p class="cover-hint">Usa la flecha derecha para comenzar.</p>
       </div>
     </section>
 
     <!-- ================================================================
-         DIAPOSITIVA 2: CONFIGURACIÓN
+         DIAPOSITIVA 2: COMPORTAMIENTO DE C
          ================================================================ -->
     <section class="slide-section">
       <div class="slide-inner app-shell">
-        <h2>Configuración experimental</h2>
-        <p class="section-description">Configura el escenario clásico y el número de mediciones cuánticas.</p>
+        <h2>Preparemos la red: Comportamiento de C</h2>
+        <p class="section-description">Define si el nodo C enviará mensajes consistentes o si intentará engañar a la red.</p>
 
         <div class="card">
-          <div class="controls">
-            <div class="control">
-              <label class="control-label">Comportamiento de C</label>
-              <label class="radio"><input type="radio" name="modo-c" value="honesto" checked> Mensaje consistente</label>
-              <label class="radio"><input type="radio" name="modo-c" value="bizantino"> Mensajes contradictorios</label>
-            </div>
-
-            <div class="control">
-              <label class="control-label">Bit enviado por C</label>
-              <label class="radio"><input type="radio" name="bit-c" value="0" checked> 0</label>
-              <label class="radio"><input type="radio" name="bit-c" value="1"> 1</label>
-            </div>
-
-            <div class="control">
-              <label class="control-label" for="shots">Repeticiones cuánticas (shots)</label>
-              <input type="range" id="shots" min="500" max="10000" step="500" value="3000">
-              <div class="range-labels"><span>500</span><span>5k</span><span>10k</span></div>
-              <div class="range-value" id="shots-value">3000</div>
-            </div>
-
-            <div class="control">
-              <label class="control-label">Ejecutar</label>
-              <p class="run-note">Inicia las mediciones y actualiza los resultados.</p>
-              <button id="run" class="run-button">▶ Ejecutar experimento</button>
-            </div>
+          <div class="control">
+            <label class="question-label">¿C dirá la verdad o enviará mensajes contradictorios?</label>
+            <label class="radio"><input type="radio" name="modo-c" value="honesto" checked> C se comporta correctamente (envía el mismo mensaje)</label>
+            <label class="radio"><input type="radio" name="modo-c" value="bizantino"> C intenta engañar (envía mensajes contradictorios)</label>
           </div>
-        </div>
 
-        <div class="notice">Nota: el escenario bizantino introduce una contradicción clásica de forma controlada. Las mediciones de Hardy se ejecutan como experimentos cuánticos independientes.</div>
+          <h4 class="preview-heading">Previsualización del escenario</h4>
+          <div id="live-preview-panel-1" class="preview-panel">Selecciona el comportamiento para previsualizar los nodos.</div>
+
+          <div class="notice">Capa clásica: Gestiona los mensajes enviados por los nodos y permite la detección directa de contradicciones.</div>
+        </div>
       </div>
     </section>
 
     <!-- ================================================================
-         DIAPOSITIVA 3: RED DISTRIBUIDA
+         DIAPOSITIVA 3: MENSAJE ORIGINAL
          ================================================================ -->
     <section class="slide-section">
       <div class="slide-inner app-shell">
-        <h2>Red distribuida</h2>
-        <p class="section-description">Selecciona un nodo o una conexión para ver su descripción.</p>
+        <h2>Preparemos la red: Mensaje original</h2>
+        <p class="section-description">Selecciona el bit inicial que el comandante C desea comunicar.</p>
+
+        <div class="card">
+          <div class="control">
+            <label class="question-label">¿Qué mensaje quiere comunicar C?</label>
+            <label class="radio radio-inline"><input type="radio" name="bit-c" value="0" checked> Mensaje 0</label>
+            <label class="radio radio-inline"><input type="radio" name="bit-c" value="1"> Mensaje 1</label>
+          </div>
+
+          <h4 class="preview-heading">Previsualización del escenario</h4>
+          <div id="live-preview-panel-2" class="preview-panel">Selecciona el mensaje para previsualizar los nodos.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         DIAPOSITIVA 4: MEDICIONES Y SHOTS CUÁNTICOS
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner app-shell">
+        <h2>Capa Cuántica: Mediciones y Repeticiones (Shots)</h2>
+        <p class="section-description">Configura cuántas veces mediremos el sistema cuántico para analizar las probabilidades de Hardy.</p>
+
+        <div class="card">
+          <h3>¿Qué son las mediciones o shots cuánticos?</h3>
+          <p class="shots-explanation">En computación cuántica, un resultado individual es probabilístico. Por ello, necesitamos ejecutar el circuito muchas veces (lo que llamamos shots o mediciones). Al repetir este proceso miles de veces, obtenemos distribuciones estadísticas precisas que nos permiten comprobar si las correlaciones cuánticas cumplen con las predicciones teóricas de Hardy.</p>
+
+          <div class="control">
+            <label class="question-label" for="shots">¿Cuántas mediciones (shots) realizaremos?</label>
+            <input type="range" id="shots" min="100" max="5000" step="100" value="3000">
+            <div class="range-labels"><span>100</span><span>2,5k</span><span>5k</span></div>
+            <div class="range-value" id="shots-value">3000</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         DIAPOSITIVA 5: RED DISTRIBUIDA Y EJECUCIÓN
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner app-shell">
+        <h2>Red distribuida y Ejecución del Experimento</h2>
+        <p class="section-description">Visualiza la red de nodos interconectados y lanza la simulación real.</p>
 
         <div class="card">
           <div id="network" class="network-container"></div>
-          <div id="node-details" class="node-details">Selecciona un nodo o canal.</div>
-          <h4>Mensajes clásicos</h4>
-          <div id="message-panel" class="msg-panel">Ejecuta el experimento.</div>
+
+          <div class="network-row">
+            <div id="node-details" class="node-details">Selecciona un nodo o canal.</div>
+            <div class="msg-box">
+              <h4>Mensajes clásicos</h4>
+              <div id="message-panel" class="msg-panel">Ejecuta el experimento.</div>
+            </div>
+          </div>
+
+          <button id="run" class="run-button">Ejecutar experimento</button>
         </div>
       </div>
     </section>
 
     <!-- ================================================================
-         DIAPOSITIVA 4: RESULTADOS
+         DIAPOSITIVA 6: RESULTADOS CUÁNTICOS (HARDY Y CIRCUITO)
          ================================================================ -->
     <section class="slide-section">
       <div class="slide-inner app-shell">
-        <h2>Circuitos y resultados</h2>
-        <p class="section-description">Frecuencias de Hardy, circuitos cuánticos y evaluación del escenario.</p>
+        <h2>Resultados Cuánticos: Correlaciones y Circuitos</h2>
+        <p class="section-description">Análisis estadístico y representación detallada de los circuitos de Qiskit.</p>
 
         <div class="layout">
           <div class="card">
@@ -92,8 +124,8 @@
           </div>
 
           <div class="card">
-            <h3>Circuito de Hardy</h3>
-            <label class="control-label" for="circuit-pair">Configuración de medición</label>
+            <h3>Circuitos Cuánticos de Qiskit</h3>
+            <label class="control-label" for="circuit-pair">Configuración de medición de Hardy</label>
             <select id="circuit-pair">
               <option value="DD">D - D</option>
               <option value="DU">D - U</option>
@@ -105,6 +137,16 @@
             <pre id="swap-text" class="code">Esperando ejecución...</pre>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         DIAPOSITIVA 7: RESULTADOS BIZANTINOS (DECISIÓN)
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner app-shell">
+        <h2>Resultados Bizantinos y Decisión del Escenario</h2>
+        <p class="section-description">Evaluación del consenso, detección de contradicciones y análisis de la transmisión clásica.</p>
 
         <div class="card">
           <h3>Decisión del escenario</h3>

@@ -1,20 +1,25 @@
 import * as hardy from 'hardy';
 
 // ============================================================
-// Navegación del deck (presentación en 4 diapositivas)
+// Navegación del deck (presentación en 6 diapositivas)
 // ============================================================
 
 const deck = document.getElementById('deck-container');
 const btnPrev = document.getElementById('btn-prev');
 const btnNext = document.getElementById('btn-next');
 const slideCounter = document.getElementById('slide-counter');
-const TOTAL_SLIDES = 4;
+const TOTAL_SLIDES = 7;
+const SLIDE_EJECUCION = 4;   // "Red distribuida y Ejecución"
+const SLIDE_RESULTADOS = 5;  // "Resultados Cuánticos"
 let slideActual = 0;
+let experimentRun = false;
 
 function actualizarDeck() {
   deck.style.transform = 'translateX(-' + (slideActual * 100) + 'vw)';
   btnPrev.disabled = slideActual === 0;
-  btnNext.disabled = slideActual === TOTAL_SLIDES - 1;
+  btnNext.disabled =
+    slideActual === TOTAL_SLIDES - 1 ||
+    (slideActual === SLIDE_EJECUCION && !experimentRun);
   slideCounter.textContent =
     String(slideActual + 1).padStart(2, '0') +
     ' / ' +
@@ -29,6 +34,10 @@ btnPrev.addEventListener('click', () => {
 });
 
 btnNext.addEventListener('click', () => {
+  // En la diapositiva de ejecución, hay que ejecutar antes de avanzar.
+  if (slideActual === SLIDE_EJECUCION && !experimentRun) {
+    return;
+  }
   if (slideActual < TOTAL_SLIDES - 1) {
     slideActual += 1;
     actualizarDeck();
@@ -36,6 +45,75 @@ btnNext.addEventListener('click', () => {
 });
 
 actualizarDeck();
+
+// ============================================================
+// Previsualización clásica (diapositivas 2 y 3)
+// ============================================================
+
+function simularMensajesLocal(bit, modo) {
+  const bitA = bit;
+  const bitB = modo === 'bizantino' ? 1 - bitA : bitA;
+  return { bit_a: bitA, bit_b: bitB, contradiccion: bitA !== bitB };
+}
+
+function construirPrevisualizacion(modo, bit) {
+  const m = simularMensajesLocal(bit, modo);
+  const contenedor = document.createElement('div');
+
+  const titulo = document.createElement('div');
+  if (m.contradiccion) {
+    titulo.textContent = 'Escenario de engaño (Bizantino activo)';
+    titulo.style.color = '#dc2626';
+  } else {
+    titulo.textContent = 'Escenario consistente (Honesto)';
+    titulo.style.color = '#166534';
+  }
+  titulo.style.fontWeight = 'bold';
+  titulo.style.fontSize = '19px';
+  titulo.style.marginBottom = '10px';
+  contenedor.appendChild(titulo);
+
+  const lineas = [
+    'Comandante C envía el mensaje original: ' + bit,
+    'Participante A recibe: ' + m.bit_a,
+    'Participante B recibe: ' + m.bit_b +
+      (m.contradiccion ? ' (Contradictorio)' : ' (Coherente)'),
+  ];
+
+  for (const texto of lineas) {
+    const p = document.createElement('p');
+    p.textContent = '- ' + texto;
+    if (m.contradiccion && texto.indexOf('B recibe') !== -1) {
+      p.style.color = '#dc2626';
+      p.style.fontWeight = '600';
+    } else if (!m.contradiccion) {
+      p.style.color = '#166534';
+    }
+    contenedor.appendChild(p);
+  }
+
+  return contenedor;
+}
+
+function renderPrevisualizacion() {
+  const modo = document.querySelector('input[name="modo-c"]:checked').value;
+  const bit = parseInt(
+    document.querySelector('input[name="bit-c"]:checked').value, 10
+  );
+  const panel1 = document.getElementById('live-preview-panel-1');
+  const panel2 = document.getElementById('live-preview-panel-2');
+
+  panel1.innerHTML = '';
+  panel2.innerHTML = '';
+  panel1.appendChild(construirPrevisualizacion(modo, bit));
+  panel2.appendChild(construirPrevisualizacion(modo, bit));
+}
+
+document.querySelectorAll('input[name="modo-c"], input[name="bit-c"]').forEach(
+  (input) => input.addEventListener('change', renderPrevisualizacion)
+);
+
+renderPrevisualizacion();
 
 // ============================================================
 // Datos de la red distribuida
@@ -59,31 +137,32 @@ const NODOS = [
 const ARISTAS = [
   {
     id: 'AB', source: 'A', target: 'B', label: 'Canal clásico',
-    clase: 'classic-edge', dy: 16,
+    clase: 'classic-edge', dy: 18,
     descripcion: 'Canal clásico de comunicación A-B.',
   },
   {
     id: 'AC', source: 'A', target: 'C', label: 'Clásico / cuántico',
-    clase: 'quantum-edge', dy: -8,
+    clase: 'quantum-edge', dy: -10,
     descripcion: 'Conexión representada entre A y C.',
   },
   {
     id: 'BC', source: 'B', target: 'C', label: 'Clásico / cuántico',
-    clase: 'quantum-edge', dy: -8,
+    clase: 'quantum-edge', dy: -10,
     descripcion: 'Conexión representada entre B y C.',
   },
 ];
 
-const RADIO = 34;
+const RADIO = 39;
+const RADIO_SELECCIONADO = 49;
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 const nodoPorId = (id) => NODOS.find((n) => n.id === id);
 
 const estiloNodo = (clase) => {
   if (clase === 'adversary') {
-    return { fill: '#fecaca', stroke: '#dc2626', sw: 3, text: '#991b1b' };
+    return { fill: '#fecaca', stroke: '#dc2626', sw: 4, text: '#991b1b' };
   }
-  return { fill: '#bfdbfe', stroke: '#3b82f6', sw: 2, text: '#0f172a' };
+  return { fill: '#bfdbfe', stroke: '#3b82f6', sw: 3, text: '#0f172a' };
 };
 
 const estiloArista = (clase) => {
@@ -104,8 +183,8 @@ function extremosArista(a) {
   return {
     x1: s.x + ux * RADIO,
     y1: s.y + uy * RADIO,
-    x2: t.x - ux * (RADIO + 6),
-    y2: t.y - uy * (RADIO + 6),
+    x2: t.x - ux * (RADIO + 8),
+    y2: t.y - uy * (RADIO + 8),
     mx: (s.x + t.x) / 2,
     my: (s.y + t.y) / 2 + (a.dy || 0),
   };
@@ -117,7 +196,7 @@ function extremosArista(a) {
 
 const contRed = document.getElementById('network');
 const svg = document.createElementNS(SVG_NS, 'svg');
-svg.setAttribute('viewBox', '0 0 520 250');
+svg.setAttribute('viewBox', '0 -12 520 280');
 svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 svg.classList.add('network-svg');
 contRed.appendChild(svg);
@@ -158,7 +237,7 @@ for (const a of ARISTAS) {
   line.setAttribute('x2', e.x2);
   line.setAttribute('y2', e.y2);
   line.setAttribute('stroke', s.color);
-  line.setAttribute('stroke-width', '2');
+  line.setAttribute('stroke-width', '3');
   if (s.dash) line.setAttribute('stroke-dasharray', s.dash);
   line.setAttribute('marker-end', 'url(#flecha-' + a.id + ')');
 
@@ -226,8 +305,8 @@ function seleccionar(id) {
     const { g, circle } = nodoEls[n.id];
     const s = estiloNodo(n.clase);
     if (id === n.id) {
-      circle.setAttribute('r', '44');
-      circle.setAttribute('stroke-width', '5');
+      circle.setAttribute('r', String(RADIO_SELECCIONADO));
+      circle.setAttribute('stroke-width', '6');
       circle.setAttribute('stroke', '#2563eb');
       g.style.opacity = '1';
     } else if (id) {
@@ -249,7 +328,7 @@ function seleccionar(id) {
     const color = id === a.id ? '#2563eb' : s.color;
     line.setAttribute('stroke', color);
     marcadores[a.id].setAttribute('fill', color);
-    line.setAttribute('stroke-width', id === a.id ? '5' : '2');
+    line.setAttribute('stroke-width', id === a.id ? '6' : '3');
     g.style.opacity = id && id !== a.id ? '0.25' : '1';
   }
 
@@ -305,6 +384,11 @@ runButton.addEventListener('click', async () => {
   const { modo, bit, shots, par } = leerEstado();
   const status = document.getElementById('protocol-status');
 
+  // Marcar el experimento como ejecutado y avanzar a resultados.
+  experimentRun = true;
+  slideActual = SLIDE_RESULTADOS;
+  actualizarDeck();
+
   runButton.disabled = true;
   runButton.textContent = 'Ejecutando…';
   status.className = 'notice';
@@ -314,6 +398,12 @@ runButton.addEventListener('click', async () => {
     const resultado = (
       await hardy.ejecutar_protocolo.callPromising(backend, shots, par, modo, bit)
     ).toJs();
+
+    if (resultado.error) {
+      status.className = 'notice notice-warn';
+      status.textContent = resultado.error;
+      return;
+    }
 
     document.getElementById('circuit-text').textContent = resultado.texto_circuito;
     document.getElementById('swap-text').textContent = resultado.texto_intercambio;
@@ -329,7 +419,7 @@ runButton.addEventListener('click', async () => {
       (err && err.message ? err.message : String(err));
   } finally {
     runButton.disabled = false;
-    runButton.textContent = '▶ Ejecutar experimento';
+    runButton.textContent = 'Ejecutar experimento';
   }
 });
 
@@ -344,13 +434,13 @@ function renderMetricas(pruebas, qMax) {
   const tarjetas = pruebas.map((p) => ({
     titulo: p.nombre,
     valor: (p.probabilidad * 100).toFixed(3) + '%',
-    desc: p.frecuencia + ' de ' + p.shots + ' resultados',
+    desc: p.frecuencia + ' de ' + p.shots,
   }));
 
   tarjetas.push({
     titulo: 'q máximo teórico',
     valor: (qMax * 100).toFixed(3) + '%',
-    desc: 'Valor ideal asociado al estado de Hardy',
+    desc: 'Ideal Hardy',
   });
 
   for (const t of tarjetas) {
@@ -358,6 +448,7 @@ function renderMetricas(pruebas, qMax) {
     div.className = 'metric';
 
     const titulo = document.createElement('div');
+    titulo.className = 'metric-title';
     titulo.textContent = t.titulo;
 
     const valor = document.createElement('div');
@@ -451,17 +542,14 @@ function renderMensajes(mensajes) {
   const pB = document.createElement('p');
   pB.textContent = 'C → B: bit ' + mensajes.bit_b;
 
+  const nota = document.createElement('p');
+  nota.textContent = mensajes.contradiccion
+    ? 'A y B reciben valores distintos.'
+    : 'Ambos reciben el mismo bit.';
+
   panel.appendChild(titulo);
   panel.appendChild(pA);
   panel.appendChild(pB);
-
-  const nota = document.createElement('p');
-  if (mensajes.contradiccion) {
-    nota.textContent = 'A y B reciben valores distintos. La discrepancia ' +
-      'se conoce porque el escenario clásico la genera.';
-  } else {
-    nota.textContent = 'Los dos participantes reciben el mismo bit.';
-  }
   panel.appendChild(nota);
 }
 

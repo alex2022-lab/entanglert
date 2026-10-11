@@ -46,23 +46,22 @@ ESTADO_HARDY = [complex(x / _norma) for x in _estado_sin_normalizar]
 
 Q_MAX = (5 * math.sqrt(5) - 11) / 2
 
-# Los vectores columna definen la base D. La matriz es real, simétrica y
-# ortogonal.
-BASE_D = [
-    [alpha, beta],
-    [beta, -alpha],
-]
+# Ángulos para preparar el estado y medir en base D usando solo puertas
+# estándar (z, ry, cx). Ni el simulador básico de Qollab ni los backends de
+# IonQ admiten ``unitary``/``initialize``, así que el estado se descompone:
+#
+#   |Hardy> = (Ry(BETA_PREP) ⊗ Ry(BETA_PREP)) · CX(0,1) · (Ry(ALPHA_PREP) ⊗ I) |00>
+#
+# y la base D (matriz [[alpha, beta], [beta, -alpha]]) como:
+#
+#   BASE_D = Ry(THETA_D) · Z
+#
+# Los valores se calcularon y verificaron numéricamente para reproducir
+# exactamente ESTADO_HARDY.
 
-# Unitaria 4x4 (real y ortogonal) cuya primera columna es ESTADO_HARDY.
-# Sirve para preparar el estado con ``unitary``, ya que el simulador básico
-# de Qollab (BasicSimulator) no reconoce la instrucción ``initialize``.
-# El resto de columnas completa la base ortonormal por Gram-Schmidt.
-MATRIZ_HARDY = [
-    [0.3002831060007776, 0.12410828034667902, 0.14747608195890924, 0.9341723589627159],
-    [-0.3819660112501051, 0.9241763718304449, 0.0, 0.0],
-    [-0.3819660112501051, -0.15786817126837643, 0.9105929973100294, 0.0],
-    [-0.7861513777574234, -0.32491969623290634, -0.38609739509608965, 0.3568220897730895],
-]
+ALPHA_PREP = -2.2722079661276049
+BETA_PREP = -0.6128403897907787
+THETA_D = 1.3324788649850305
 
 
 def construir_circuito_hardy(base1, base2):
@@ -72,15 +71,21 @@ def construir_circuito_hardy(base1, base2):
 
     qc = QuantumCircuit(2, 2)
 
-    # Preparar el estado de Hardy.
-    qc.unitary(MATRIZ_HARDY, [0, 1], label="Estado de Hardy")
+    # Preparar el estado de Hardy con puertas estándar (compatible con
+    # BasicSimulator y con el gateset de IonQ).
+    qc.ry(ALPHA_PREP, 0)
+    qc.cx(0, 1)
+    qc.ry(BETA_PREP, 0)
+    qc.ry(BETA_PREP, 1)
 
     # Cambiar de base antes de medir cuando corresponde.
     if base1 == "D":
-        qc.unitary(BASE_D, [0], label="Base D")
+        qc.z(0)
+        qc.ry(THETA_D, 0)
 
     if base2 == "D":
-        qc.unitary(BASE_D, [1], label="Base D")
+        qc.z(1)
+        qc.ry(THETA_D, 1)
 
     qc.measure([0, 1], [0, 1])
 
@@ -240,8 +245,21 @@ def ejecutar_protocolo(backend, shots, par, modo, bit_c):
 
     # Un único job con los cinco circuitos (en IonQ solo se permite un job
     # por ejecución).
-    job = backend.run(circuitos_hardy + [circuito_swap], shots=shots)
-    resultado = job.result()
+    try:
+        job = backend.run(circuitos_hardy + [circuito_swap], shots=shots)
+        resultado = job.result()
+    except Exception as exc:  # noqa: BLE001 — se devuelve un mensaje limpio a la UI
+        nombre = getattr(backend, "name", "desconocido")
+        return {
+            "error": (
+                "No se pudo ejecutar el experimento en el backend "
+                f"'{nombre}'. Si elegiste un backend remoto de IonQ, ten "
+                "en cuenta que los proyectos JS corren en un iframe aislado "
+                "que puede no alcanzar la API de IonQ; prueba con el "
+                "simulador integrado (gratis y local). Detalle: "
+                f"{exc.__class__.__name__}: {exc}"
+            ),
+        }
 
     pruebas = []
     for i, (b1, b2, nombre, patron, tipo) in enumerate(configuraciones):
