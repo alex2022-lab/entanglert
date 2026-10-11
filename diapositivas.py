@@ -360,7 +360,7 @@ ESTILOS = [
 
 
 # ============================================================
-# 5. APLICACIÓN Y ESTILOS DEL DECK (6 DIAPOSITIVAS TOTALES)
+# 5. APLICACIÓN Y ESTILOS DEL DECK (7 DIAPOSITIVAS TOTALES)
 # ============================================================
 
 app = Dash(__name__)
@@ -382,7 +382,7 @@ html, body {
     background: #f8fafc;
     color: #0f172a;
     font-family: 'Manrope', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 #react-entry-point, #_dash-app-content {
@@ -399,7 +399,7 @@ html, body {
 
 .deck-container {
     display: flex;
-    width: 600vw;
+    width: 700vw;
     height: 100vh;
     transform: translateX(0vw);
     transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
@@ -412,7 +412,7 @@ html, body {
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 40px 60px;
+    padding: 20px 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -420,34 +420,36 @@ html, body {
 
 .slide-inner {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1650px;
     margin: auto;
 }
 
 .cover-content {
     text-align: center;
-    max-width: 1100px;
+    max-width: 1200px;
 }
 
 .cover-title {
-    font-size: clamp(40px, 6vw, 84px);
+    font-size: clamp(55px, 8vw, 105px);
     font-weight: 800;
-    letter-spacing: 4px;
-    margin: 0 0 20px 0;
+    letter-spacing: 6px;
+    margin: 0 0 25px 0;
 }
 
 .cover-subtitle {
-    color: #64748b;
-    font-size: clamp(20px, 2.5vw, 28px);
-    line-height: 1.7;
+    color: #334155;
+    font-size: clamp(24px, 3.5vw, 36px);
+    line-height: 1.5;
+    font-weight: 700;
 }
 
 .cover-kicker {
-    font-size: 15px;
-    letter-spacing: 4px;
+    font-size: 18px;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 25px;
+    color: #2563eb;
+    font-weight: 800;
+    margin-bottom: 30px;
 }
 
 .nav-arrow {
@@ -502,7 +504,7 @@ html, body {
 
 .app-shell {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1650px;
     margin: 0 auto;
 }
 
@@ -510,36 +512,36 @@ html, body {
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
-    padding: 28px;
-    margin-bottom: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
     box-shadow: 0 6px 16px rgba(15,23,42,.06);
     width: 100%;
 }
 
 h2 {
-    font-size: 36px;
+    font-size: 32px;
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     font-weight: 800;
 }
 
 h3 {
-    font-size: 26px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-weight: 700;
-}
-
-h4 {
     font-size: 22px;
     margin-top: 0;
     margin-bottom: 10px;
     font-weight: 700;
 }
 
+h4 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
 .layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
     gap: 24px;
     width: 100%;
 }
@@ -553,40 +555,47 @@ h4 {
 .control {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    padding: 22px;
+    padding: 20px;
     border-radius: 12px;
     min-width: 0;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .metric-row {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
 }
 
 .metric {
-    padding: 18px;
+    padding: 12px 10px;
     background: #f1f5f9;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow-wrap: anywhere;
-    font-size: 17px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 90px;
+    text-align: center;
 }
 
 .metric-value {
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 800;
-    margin: 6px 0;
+    margin: 4px 0;
+    line-height: 1.1;
 }
 
 .notice {
-    padding: 18px;
+    padding: 14px;
     border-radius: 12px;
     background: #eff6ff;
     color: #1e40af;
-    margin-top: 16px;
-    line-height: 1.65;
-    font-size: 17px;
+    margin-top: 12px;
+    line-height: 1.5;
+    font-size: 15px;
     white-space: pre-line;
 }
 
@@ -602,14 +611,14 @@ h4 {
 
 .section-description {
     color: #64748b;
-    line-height: 1.6;
-    margin-bottom: 24px;
-    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    font-size: 18px;
 }
 
 button {
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 @media(max-width: 900px) {
@@ -634,9 +643,9 @@ def tarjeta(titulo, valor, descripcion=""):
     return html.Div(
         className="metric",
         children=[
-            html.Div(titulo, style={"fontSize": "16px"}),
+            html.Div(titulo, style={"fontSize": "12px", "fontWeight": "600", "color": "#475569"}),
             html.Div(valor, className="metric-value"),
-            html.Small(descripcion, style={"fontSize": "14px"})
+            html.Small(descripcion, style={"fontSize": "11px", "color": "#64748b", "lineHeight": "1.1"})
         ]
     )
 
@@ -654,7 +663,7 @@ def crear_figura_hardy(pruebas):
         marker_color=colores,
         text=[f"{v:.3%}" for v in valores],
         textposition="outside",
-        textfont={"size": 15},
+        textfont={"size": 13},
         hovertemplate=(
             "%{x}<br>Probabilidad: %{y:.4%}<extra></extra>"
         )
@@ -665,28 +674,29 @@ def crear_figura_hardy(pruebas):
     figura.update_layout(
         paper_bgcolor="white",
         plot_bgcolor="white",
-        margin={"l": 55, "r": 25, "t": 40, "b": 65},
-        yaxis_title="Probabilidad observada",
-        xaxis_title="Condición de Hardy",
+        margin={"l": 45, "r": 20, "t": 30, "b": 45},
+        yaxis_title="Probabilidad",
+        xaxis_title="Condición",
         yaxis_range=[0, max(0.12, maximo * 1.4)],
-        font={"family": "Manrope, sans-serif", "size": 15},
+        font={"family": "Manrope, sans-serif", "size": 13},
         showlegend=False,
         autosize=True
     )
 
-    figura.update_yaxes(tickformat=".0%", gridcolor="#e2e8f0", title_font={"size": 16})
-    figura.update_xaxes(title_font={"size": 16})
+    figura.update_yaxes(tickformat=".0%", gridcolor="#e2e8f0", title_font={"size": 14})
+    figura.update_xaxes(title_font={"size": 14})
     return figura
 
 
 # ============================================================
-# 6. LAYOUT: 6 DIAPOSITIVAS EN TOTAL
+# 6. LAYOUT: 7 DIAPOSITIVAS EN TOTAL
 # ============================================================
 
 app.layout = html.Div(
     className="deck-viewport",
     children=[
         dcc.Store(id="slide-index", data=0),
+        dcc.Store(id="experiment-run-store", data=False),
 
         html.Button(
             "<",
@@ -709,7 +719,7 @@ app.layout = html.Div(
         html.Div(
             id="slide-counter",
             className="slide-counter",
-            children="01 / 06"
+            children="01 / 07"
         ),
 
         html.Div(
@@ -740,23 +750,23 @@ app.layout = html.Div(
                                     className="cover-subtitle"
                                 ),
                                 html.P(
-                                    "Explora una red de tres nodos, "
-                                    "desafia la comunicacion con mensajes contradictorios "
-                                    "y examina las correlaciones de Hardy en busca de condiciones que permitan verificar la consistencia del sistema.",
+                                    "Explora una red de tres nodos, desafia la comunicacion con mensajes contradictorios y examina las correlaciones de Hardy en busca de condiciones que permitan verificar la consistencia del sistema.",
                                     style={
-                                        "maxWidth": "800px",
-                                        "margin": "30px auto",
-                                        "lineHeight": "1.8",
+                                        "maxWidth": "950px",
+                                        "margin": "35px auto",
+                                        "lineHeight": "1.7",
                                         "color": "#475569",
-                                        "fontSize": "21px"
+                                        "fontSize": "24px",
+                                        "fontWeight": "500"
                                     }
                                 ),
                                 html.P(
                                     "Usa la flecha derecha para comenzar.",
                                     style={
-                                        "marginTop": "50px",
+                                        "marginTop": "45px",
                                         "color": "#64748b",
-                                        "fontSize": "17px"
+                                        "fontSize": "19px",
+                                        "fontWeight": "600"
                                     }
                                 )
                             ]
@@ -780,15 +790,15 @@ app.layout = html.Div(
                                 ),
                                 html.Div(
                                     className="card",
-                                    style={"padding": "35px"},
+                                    style={"padding": "30px"},
                                     children=[
                                         html.Div(
                                             className="control",
-                                            style={"fontSize": "20px", "padding": "25px"},
+                                            style={"fontSize": "18px", "padding": "20px"},
                                             children=[
                                                 html.Label(
                                                     "¿C dira la verdad o enviara mensajes contradictorios?",
-                                                    style={"fontWeight": "700", "display": "block", "marginBottom": "16px", "fontSize": "22px"}
+                                                    style={"fontWeight": "700", "display": "block", "marginBottom": "12px", "fontSize": "20px"}
                                                 ),
                                                 dcc.RadioItems(
                                                     id="modo-c",
@@ -805,26 +815,26 @@ app.layout = html.Div(
                                                     value="honesto",
                                                     labelStyle={
                                                         "display": "block",
-                                                        "marginTop": "16px",
-                                                        "fontSize": "18px"
+                                                        "marginTop": "12px",
+                                                        "fontSize": "16px"
                                                     }
                                                 )
                                             ]
                                         ),
                                         html.Div(
-                                            style={"marginTop": "25px"},
+                                            style={"marginTop": "20px"},
                                             children=[
-                                                html.H4("Previsualizacion del escenario", style={"margin": "0 0 12px 0", "fontSize": "20px"}),
+                                                html.H4("Previsualizacion del escenario", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
                                                 html.Div(
                                                     id="live-preview-panel-1",
                                                     children="Selecciona el comportamiento para previsualizar los nodos.",
-                                                    style={"fontSize": "17px", "lineHeight": "1.7", "background": "#f8fafc", "padding": "20px", "borderRadius": "12px", "border": "1px solid #e2e8f0"}
+                                                    style={"fontSize": "16px", "lineHeight": "1.6", "background": "#f8fafc", "padding": "16px", "borderRadius": "10px", "border": "1px solid #e2e8f0"}
                                                 )
                                             ]
                                         ),
                                         html.Div(
                                             className="notice",
-                                            style={"marginTop": "25px", "fontSize": "18px", "padding": "22px"},
+                                            style={"marginTop": "20px", "fontSize": "16px", "padding": "18px"},
                                             children=(
                                                 "Capa clasica: Gestiona los mensajes enviados por los nodos y permite la deteccion directa de contradicciones."
                                             )
@@ -852,15 +862,15 @@ app.layout = html.Div(
                                 ),
                                 html.Div(
                                     className="card",
-                                    style={"padding": "35px"},
+                                    style={"padding": "30px"},
                                     children=[
                                         html.Div(
                                             className="control",
-                                            style={"fontSize": "20px", "padding": "25px"},
+                                            style={"fontSize": "18px", "padding": "20px"},
                                             children=[
                                                 html.Label(
                                                     "¿Que mensaje quiere comunicar C?",
-                                                    style={"fontWeight": "700", "display": "block", "marginBottom": "16px", "fontSize": "22px"}
+                                                    style={"fontWeight": "700", "display": "block", "marginBottom": "12px", "fontSize": "20px"}
                                                 ),
                                                 dcc.RadioItems(
                                                     id="bit-c",
@@ -872,19 +882,19 @@ app.layout = html.Div(
                                                     labelStyle={
                                                         "display": "inline-block",
                                                         "marginRight": "40px",
-                                                        "fontSize": "18px"
+                                                        "fontSize": "16px"
                                                     }
                                                 )
                                             ]
                                         ),
                                         html.Div(
-                                            style={"marginTop": "25px"},
+                                            style={"marginTop": "20px"},
                                             children=[
-                                                html.H4("Previsualizacion del escenario", style={"margin": "0 0 12px 0", "fontSize": "20px"}),
+                                                html.H4("Previsualizacion del escenario", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
                                                 html.Div(
                                                     id="live-preview-panel-2",
                                                     children="Selecciona el mensaje para previsualizar los nodos.",
-                                                    style={"fontSize": "17px", "lineHeight": "1.7", "background": "#f8fafc", "padding": "20px", "borderRadius": "12px", "border": "1px solid #e2e8f0"}
+                                                    style={"fontSize": "16px", "lineHeight": "1.6", "background": "#f8fafc", "padding": "16px", "borderRadius": "10px", "border": "1px solid #e2e8f0"}
                                                 )
                                             ]
                                         )
@@ -896,7 +906,7 @@ app.layout = html.Div(
                 ),
 
                 # ----------------------------------------------------
-                # DIAPOSITIVA 4: RED DISTRIBUIDA (CON CONTROLES Y BOTÓN DE EJECUCIÓN)
+                # DIAPOSITIVA 4: MEDICIONES Y SHOTS CUÁNTICOS
                 # ----------------------------------------------------
                 html.Div(
                     className="slide-section",
@@ -904,71 +914,28 @@ app.layout = html.Div(
                         html.Div(
                             className="slide-inner app-shell",
                             children=[
-                                html.H2("Red distribuida y Ejecución"),
+                                html.H2("Capa Cuántica: Mediciones y Repeticiones (Shots)"),
                                 html.P(
-                                    "Visualiza la red, configura las mediciones y ejecuta el experimento.",
+                                    "Configura cuántas veces mediremos el sistema cuántico para analizar las probabilidades de Hardy.",
                                     className="section-description"
                                 ),
                                 html.Div(
                                     className="card",
-                                    style={"padding": "25px"},
+                                    style={"padding": "35px"},
                                     children=[
-                                        cyto.Cytoscape(
-                                            id="network",
-                                            elements=ELEMENTOS,
-                                            stylesheet=ESTILOS,
-                                            layout={
-                                                "name": "preset",
-                                                "fit": True,
-                                                "padding": 20
-                                            },
-                                            style={
-                                                "height": "340px",
-                                                "width": "100%"
-                                            },
-                                            userZoomingEnabled=False,
-                                            userPanningEnabled=False,
-                                            boxSelectionEnabled=False
+                                        html.H3("¿Qué son las mediciones o shots cuánticos?", style={"fontSize": "22px", "marginBottom": "12px"}),
+                                        html.P(
+                                            "En computación cuántica, un resultado individual es probabilístico. Por ello, necesitamos ejecutar el circuito muchas veces (lo que llamamos shots o mediciones). "
+                                            "Al repetir este proceso miles de veces, obtenemos distribuciones estadísticas precisas que nos permiten comprobar si las correlaciones cuánticas cumplen con las predicciones teóricas de Hardy.",
+                                            style={"fontSize": "17px", "lineHeight": "1.7", "color": "#475569", "marginBottom": "25px"}
                                         ),
                                         html.Div(
-                                            style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "20px", "marginTop": "20px"},
-                                            children=[
-                                                html.Div(
-                                                    id="node-details",
-                                                    children=html.P("Selecciona un nodo o canal.", style={"margin": "0", "fontSize": "17px"}),
-                                                    style={
-                                                        "padding": "18px",
-                                                        "background": "#f8fafc",
-                                                        "borderRadius": "12px",
-                                                        "border": "1px solid #e2e8f0",
-                                                        "minHeight": "90px"
-                                                    }
-                                                ),
-                                                html.Div(
-                                                    children=[
-                                                        html.H4("Mensajes clasicos", style={"margin": "0 0 8px 0", "fontSize": "19px"}),
-                                                        html.Div(
-                                                            id="message-panel",
-                                                            children="Ejecuta el experimento.",
-                                                            style={"fontSize": "17px"}
-                                                        )
-                                                    ],
-                                                    style={
-                                                        "padding": "18px",
-                                                        "background": "#f8fafc",
-                                                        "borderRadius": "12px",
-                                                        "border": "1px solid #e2e8f0",
-                                                        "minHeight": "90px"
-                                                    }
-                                                )
-                                            ]
-                                        ),
-                                        html.Div(
-                                            style={"marginTop": "20px", "padding": "20px", "background": "#f8fafc", "borderRadius": "12px", "border": "1px solid #e2e8f0"},
+                                            className="control",
+                                            style={"padding": "25px", "background": "#f8fafc", "borderRadius": "12px", "border": "1px solid #e2e8f0"},
                                             children=[
                                                 html.Label(
-                                                    "¿Cuantas mediciones realizaremos?",
-                                                    style={"fontWeight": "700", "display": "block", "marginBottom": "10px", "fontSize": "18px"}
+                                                    "¿Cuántas mediciones (shots) realizaremos?",
+                                                    style={"fontWeight": "700", "display": "block", "marginBottom": "12px", "fontSize": "18px"}
                                                 ),
                                                 dcc.Slider(
                                                     id="shots",
@@ -980,20 +947,95 @@ app.layout = html.Div(
                                                         100: "100",
                                                         2500: "2,5k",
                                                         5000: "5k"
-                                                    },
-                                                    tooltip={
-                                                        "placement": "bottom",
-                                                        "always_visible": True
+                                                    }
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ]
+                        )
+                    ]
+                ),
+
+                # ----------------------------------------------------
+                # DIAPOSITIVA 5: RED DISTRIBUIDA Y EJECUCIÓN
+                # ----------------------------------------------------
+                html.Div(
+                    className="slide-section",
+                    children=[
+                        html.Div(
+                            className="slide-inner app-shell",
+                            children=[
+                                html.H2("Red distribuida y Ejecución del Experimento"),
+                                html.P(
+                                    "Visualiza la red de nodos interconectados y lanza la simulación real.",
+                                    className="section-description"
+                                ),
+                                html.Div(
+                                    className="card",
+                                    style={"padding": "20px"},
+                                    children=[
+                                        cyto.Cytoscape(
+                                            id="network",
+                                            elements=ELEMENTOS,
+                                            stylesheet=ESTILOS,
+                                            layout={
+                                                "name": "preset",
+                                                "fit": True,
+                                                "padding": 15
+                                            },
+                                            style={
+                                                "height": "320px",
+                                                "width": "100%"
+                                            },
+                                            userZoomingEnabled=False,
+                                            userPanningEnabled=False,
+                                            boxSelectionEnabled=False
+                                        ),
+                                        html.Div(
+                                            style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "15px", "marginTop": "15px"},
+                                            children=[
+                                                html.Div(
+                                                    id="node-details",
+                                                    children=html.P("Selecciona un nodo o canal.", style={"margin": "0", "fontSize": "16px"}),
+                                                    style={
+                                                        "padding": "14px",
+                                                        "background": "#f8fafc",
+                                                        "borderRadius": "10px",
+                                                        "border": "1px solid #e2e8f0",
+                                                        "minHeight": "75px"
                                                     }
                                                 ),
+                                                html.Div(
+                                                    children=[
+                                                        html.H4("Mensajes clasicos", style={"margin": "0 0 6px 0", "fontSize": "17px"}),
+                                                        html.Div(
+                                                            id="message-panel",
+                                                            children="Ejecuta el experimento.",
+                                                            style={"fontSize": "16px"}
+                                                        )
+                                                    ],
+                                                    style={
+                                                        "padding": "14px",
+                                                        "background": "#f8fafc",
+                                                        "borderRadius": "10px",
+                                                        "border": "1px solid #e2e8f0",
+                                                        "minHeight": "75px"
+                                                    }
+                                                )
+                                            ]
+                                        ),
+                                        html.Div(
+                                            style={"marginTop": "15px"},
+                                            children=[
                                                 html.Button(
                                                     "Ejecutar experimento",
                                                     id="run",
                                                     n_clicks=0,
                                                     style={
                                                         "width": "100%",
-                                                        "marginTop": "20px",
-                                                        "padding": "16px",
+                                                        "padding": "14px",
                                                         "background": "#2563eb",
                                                         "color": "white",
                                                         "border": "none",
@@ -1013,7 +1055,7 @@ app.layout = html.Div(
                 ),
 
                 # ----------------------------------------------------
-                # DIAPOSITIVA 5: RESULTADOS 1 (CORRELACIONES DE HARDY Y CIRCUITOS)
+                # DIAPOSITIVA 6: RESULTADOS CUÁNTICOS AMPLIADOS (HARDY Y CIRCUITO)
                 # ----------------------------------------------------
                 html.Div(
                     className="slide-section",
@@ -1021,19 +1063,20 @@ app.layout = html.Div(
                         html.Div(
                             className="slide-inner app-shell",
                             children=[
-                                html.H2("Resultados: Correlaciones de Hardy y Circuitos"),
+                                html.H2("Resultados Cuánticos: Correlaciones y Circuitos"),
                                 html.P(
-                                    "Análisis estadístico de las frecuencias cuánticas y representación de los circuitos.",
+                                    "Análisis estadístico y representación detallada de los circuitos de Qiskit.",
                                     className="section-description"
                                 ),
                                 html.Div(
                                     className="layout",
+                                    style={"alignItems": "stretch"},
                                     children=[
                                         html.Div(
                                             className="card",
-                                            style={"padding": "30px"},
+                                            style={"padding": "22px", "display": "flex", "flexDirection": "column"},
                                             children=[
-                                                html.H3("Correlaciones de Hardy", style={"fontSize": "24px"}),
+                                                html.H3("Correlaciones de Hardy", style={"fontSize": "21px", "marginBottom": "12px"}),
                                                 html.Div(
                                                     id="hardy-metrics",
                                                     className="metric-row"
@@ -1044,12 +1087,12 @@ app.layout = html.Div(
                                                         "displayModeBar": False,
                                                         "responsive": True
                                                     },
-                                                    style={"height": "320px"}
+                                                    style={"height": "230px", "flex": "1"}
                                                 ),
                                                 html.Div(
                                                     id="hardy-status",
                                                     className="notice",
-                                                    style={"fontSize": "17px", "padding": "20px"},
+                                                    style={"fontSize": "14px", "padding": "12px", "marginTop": "10px"},
                                                     children=(
                                                         "Ejecuta el experimento "
                                                         "para evaluar las correlaciones."
@@ -1059,12 +1102,12 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             className="card",
-                                            style={"padding": "30px"},
+                                            style={"padding": "22px", "display": "flex", "flexDirection": "column"},
                                             children=[
-                                                html.H3("Circuito de Hardy", style={"fontSize": "24px"}),
+                                                html.H3("Circuitos Cuánticos de Qiskit", style={"fontSize": "21px", "marginBottom": "8px"}),
                                                 html.Label(
-                                                    "Configuracion de medicion",
-                                                    style={"fontSize": "18px", "fontWeight": "600"}
+                                                    "Configuracion de medicion de Hardy",
+                                                    style={"fontSize": "15px", "fontWeight": "600"}
                                                 ),
                                                 dcc.Dropdown(
                                                     id="circuit-pair",
@@ -1076,7 +1119,7 @@ app.layout = html.Div(
                                                     ],
                                                     value="UU",
                                                     clearable=False,
-                                                    style={"marginTop": "8px", "marginBottom": "15px", "fontSize": "17px"}
+                                                    style={"marginTop": "4px", "marginBottom": "10px", "fontSize": "15px"}
                                                 ),
                                                 html.Pre(
                                                     id="circuit-text",
@@ -1085,29 +1128,33 @@ app.layout = html.Div(
                                                         "para ver el circuito."
                                                     ),
                                                     style={
-                                                        "whiteSpace": "pre-wrap",
+                                                        "whiteSpace": "pre",
+                                                        "fontFamily": "monospace",
                                                         "background": "#f1f5f9",
-                                                        "padding": "15px",
-                                                        "borderRadius": "10px",
-                                                        "fontSize": "13px",
-                                                        "maxHeight": "170px",
+                                                        "padding": "12px",
+                                                        "borderRadius": "8px",
+                                                        "fontSize": "11.5px",
+                                                        "flex": "1",
+                                                        "minHeight": "115px",
                                                         "overflow": "auto"
                                                     }
                                                 ),
                                                 html.H4(
                                                     "Intercambio de entrelazamiento",
-                                                    style={"marginTop": "18px", "fontSize": "20px"}
+                                                    style={"marginTop": "12px", "fontSize": "16px", "marginBottom": "6px"}
                                                 ),
                                                 html.Pre(
                                                     id="swap-text",
                                                     children="Esperando ejecucion...",
                                                     style={
-                                                        "whiteSpace": "pre-wrap",
+                                                        "whiteSpace": "pre",
+                                                        "fontFamily": "monospace",
                                                         "background": "#f1f5f9",
-                                                        "padding": "15px",
-                                                        "borderRadius": "10px",
-                                                        "fontSize": "13px",
-                                                        "maxHeight": "150px",
+                                                        "padding": "12px",
+                                                        "borderRadius": "8px",
+                                                        "fontSize": "11.5px",
+                                                        "flex": "1",
+                                                        "minHeight": "115px",
                                                         "overflow": "auto"
                                                     }
                                                 )
@@ -1121,7 +1168,7 @@ app.layout = html.Div(
                 ),
 
                 # ----------------------------------------------------
-                # DIAPOSITIVA 6: RESULTADOS 2 (DECISIÓN BIZANTINA Y EVALUACIÓN)
+                # DIAPOSITIVA 7: RESULTADOS BIZANTINOS (DECISIÓN DEL ESCENARIO)
                 # ----------------------------------------------------
                 html.Div(
                     className="slide-section",
@@ -1129,20 +1176,20 @@ app.layout = html.Div(
                         html.Div(
                             className="slide-inner app-shell",
                             children=[
-                                html.H2("Resultados: Evaluación y Decisión del Escenario"),
+                                html.H2("Resultados Bizantinos y Decisión del Escenario"),
                                 html.P(
-                                    "Verificación de consistencia clásica y validación final del protocolo bizantino.",
+                                    "Evaluación del consenso, detección de contradicciones y análisis de la transmisión clásica.",
                                     className="section-description"
                                 ),
                                 html.Div(
                                     className="card",
-                                    style={"padding": "40px"},
+                                    style={"padding": "35px"},
                                     children=[
                                         html.H3("Decision del escenario", style={"fontSize": "26px", "marginBottom": "20px"}),
                                         html.Div(
                                             id="protocol-status",
                                             className="notice",
-                                            style={"fontSize": "19px", "padding": "25px"},
+                                            style={"fontSize": "18px", "padding": "22px"},
                                             children=(
                                                 "Ejecuta el experimento para "
                                                 "evaluar la transmision."
@@ -1157,10 +1204,10 @@ app.layout = html.Div(
                                             "identifica automaticamente al "
                                             "responsable.",
                                             style={
-                                                "fontSize": "17px",
+                                                "fontSize": "16px",
                                                 "color": "#64748b",
-                                                "lineHeight": "1.8",
-                                                "marginTop": "25px"
+                                                "lineHeight": "1.7",
+                                                "marginTop": "20px"
                                             }
                                         )
                                     ]
@@ -1176,12 +1223,13 @@ app.layout = html.Div(
 
 
 # ============================================================
-# 7. NAVEGACIÓN Y AVANCE AUTOMÁTICO AL EJECUTAR
+# 7. NAVEGACIÓN Y BLOQUEO DEL BOTÓN DE AVANCE HASTA EJECUTAR
 # ============================================================
 
 @app.callback(
     Output("deck-container", "style"),
     Output("slide-index", "data"),
+    Output("experiment-run-store", "data"),
     Output("btn-prev", "disabled"),
     Output("btn-next", "disabled"),
     Output("slide-counter", "children"),
@@ -1189,32 +1237,42 @@ app.layout = html.Div(
     Input("btn-next", "n_clicks"),
     Input("run", "n_clicks"),
     State("slide-index", "data"),
+    State("experiment-run-store", "data"),
     prevent_initial_call=True
 )
-def navegar_deck(n_prev, n_next, n_run, current_slide):
+def navegar_deck(n_prev, n_next, n_run, current_slide, experiment_run):
     if current_slide is None:
         current_slide = 0
+    if experiment_run is None:
+        experiment_run = False
 
     triggered = ctx.triggered_id
 
     if triggered == "btn-next":
-        current_slide = min(current_slide + 1, 5)
+        if current_slide == 4 and not experiment_run:
+            pass
+        else:
+            current_slide = min(current_slide + 1, 6)
     elif triggered == "btn-prev":
         current_slide = max(current_slide - 1, 0)
     elif triggered == "run":
-        # Al ejecutar el experimento, avanza automáticamente a la primera diapositiva de resultados (índice 4)
-        current_slide = 4
+        experiment_run = True
+        current_slide = 5
 
     estilo = {
         "transform": f"translateX(-{current_slide * 100}vw)"
     }
 
+    prev_disabled = (current_slide == 0)
+    next_disabled = (current_slide == 6) or (current_slide == 4 and not experiment_run)
+
     return (
         estilo,
         current_slide,
-        current_slide == 0,
-        current_slide == 5,
-        f"{current_slide + 1:02d} / 06"
+        experiment_run,
+        prev_disabled,
+        next_disabled,
+        f"{current_slide + 1:02d} / 07"
     )
 
 
@@ -1237,21 +1295,21 @@ def actualizar_previsualizacion_clasica(modo, bit_c):
         contenido = [
             html.Div(
                 "Escenario de engano (Bizantino activo)",
-                style={"color": "#dc2626", "fontWeight": "bold", "marginBottom": "10px", "fontSize": "19px"}
+                style={"color": "#dc2626", "fontWeight": "bold", "marginBottom": "8px", "fontSize": "17px"}
             ),
-            html.P(f"- Comandante C envia el mensaje original: {bit_c}", style={"margin": "6px 0", "fontSize": "17px"}),
-            html.P(f"- Participante A recibe: {bit_a}", style={"margin": "6px 0", "color": "#1e293b", "fontSize": "17px"}),
-            html.P(f"- Participante B recibe: {bit_b} (Contradictorio)", style={"margin": "6px 0", "color": "#dc2626", "fontWeight": "600", "fontSize": "17px"})
+            html.P(f"- Comandante C envia el mensaje original: {bit_c}", style={"margin": "4px 0", "fontSize": "15px"}),
+            html.P(f"- Participante A recibe: {bit_a}", style={"margin": "4px 0", "color": "#1e293b", "fontSize": "15px"}),
+            html.P(f"- Participante B recibe: {bit_b} (Contradictorio)", style={"margin": "4px 0", "color": "#dc2626", "fontWeight": "600", "fontSize": "15px"})
         ]
     else:
         contenido = [
             html.Div(
                 "Escenario consistente (Honesto)",
-                style={"color": "#166534", "fontWeight": "bold", "marginBottom": "10px", "fontSize": "19px"}
+                style={"color": "#166534", "fontWeight": "bold", "marginBottom": "8px", "fontSize": "17px"}
             ),
-            html.P(f"- Comandante C envia el mensaje original: {bit_c}", style={"margin": "6px 0", "fontSize": "17px"}),
-            html.P(f"- Participante A recibe: {bit_a}", style={"margin": "6px 0", "color": "#166534", "fontSize": "17px"}),
-            html.P(f"- Participante B recibe: {bit_b} (Coherente)", style={"margin": "6px 0", "color": "#166534", "fontSize": "17px"})
+            html.P(f"- Comandante C envia el mensaje original: {bit_c}", style={"margin": "4px 0", "fontSize": "15px"}),
+            html.P(f"- Participante A recibe: {bit_a}", style={"margin": "4px 0", "color": "#166534", "fontSize": "15px"}),
+            html.P(f"- Participante B recibe: {bit_b} (Coherente)", style={"margin": "4px 0", "color": "#166534", "fontSize": "15px"})
         ]
 
     return contenido, contenido
@@ -1294,7 +1352,7 @@ def seleccionar_elemento(nodo, arista):
         elementos.append(elemento)
 
     if not seleccionado:
-        panel = html.P("Selecciona un nodo o canal.", style={"margin": "0", "fontSize": "17px"})
+        panel = html.P("Selecciona un nodo o canal.", style={"margin": "0", "fontSize": "15px"})
     else:
         if "source" in seleccionado:
             titulo = (
@@ -1305,8 +1363,8 @@ def seleccionar_elemento(nodo, arista):
             titulo = f"Nodo {seleccionado.get('label', '')}"
 
         panel = html.Div([
-            html.H4(titulo, style={"margin": "0 0 6px 0", "fontSize": "18px"}),
-            html.P(seleccionado.get("description", ""), style={"margin": "0", "fontSize": "16px"})
+            html.H4(titulo, style={"margin": "0 0 4px 0", "fontSize": "16px"}),
+            html.P(seleccionado.get("description", ""), style={"margin": "0", "fontSize": "14px"})
         ])
 
     return panel, elementos
@@ -1373,15 +1431,15 @@ def ejecutar_protocolo(
             tarjeta(
                 prueba["nombre"],
                 f"{prueba['probabilidad']:.3%}",
-                f"{prueba['frecuencia']} de {prueba['shots']} resultados"
+                f"{prueba['frecuencia']} de {prueba['shots']}"
             )
         )
 
     metricas.append(
         tarjeta(
-            "q maximo teorico",
+            "q max teorico",
             f"{Q_MAX:.3%}",
-            "Valor ideal asociado al estado de Hardy"
+            "Ideal Hardy"
         )
     )
 
@@ -1412,13 +1470,13 @@ def ejecutar_protocolo(
             [
                 html.H4(
                     "Contradiccion clasica introducida",
-                    style={"color": "#b91c1c", "margin": "0 0 6px 0", "fontSize": "17px"}
+                    style={"color": "#b91c1c", "margin": "0 0 4px 0", "fontSize": "15px"}
                 ),
-                html.P(f"C -> A: bit {bit_a}", style={"margin": "4px 0", "fontSize": "16px"}),
-                html.P(f"C -> B: bit {bit_b}", style={"margin": "4px 0", "fontSize": "16px"}),
+                html.P(f"C -> A: bit {bit_a}", style={"margin": "2px 0", "fontSize": "14px"}),
+                html.P(f"C -> B: bit {bit_b}", style={"margin": "2px 0", "fontSize": "14px"}),
                 html.P(
                     "A y B reciben valores distintos.",
-                    style={"margin": "4px 0", "fontSize": "16px"}
+                    style={"margin": "2px 0", "fontSize": "14px"}
                 )
             ]
         )
@@ -1427,11 +1485,11 @@ def ejecutar_protocolo(
             [
                 html.H4(
                     "Mensajes clasicos consistentes",
-                    style={"color": "#166534", "margin": "0 0 6px 0", "fontSize": "17px"}
+                    style={"color": "#166534", "margin": "0 0 4px 0", "fontSize": "15px"}
                 ),
-                html.P(f"C -> A: bit {bit_a}", style={"margin": "4px 0", "fontSize": "16px"}),
-                html.P(f"C -> B: bit {bit_b}", style={"margin": "4px 0", "fontSize": "16px"}),
-                html.P("Ambos reciben el mismo bit.", style={"margin": "4px 0", "fontSize": "16px"})
+                html.P(f"C -> A: bit {bit_a}", style={"margin": "2px 0", "fontSize": "14px"}),
+                html.P(f"C -> B: bit {bit_b}", style={"margin": "2px 0", "fontSize": "14px"}),
+                html.P("Ambos reciben el mismo bit.", style={"margin": "2px 0", "fontSize": "14px"})
             ]
         )
 
@@ -1439,22 +1497,22 @@ def ejecutar_protocolo(
     decision = decidir_protocolo(pruebas, mensajes, shots)
 
     panel_decision = html.Div([
-        html.H3(decision["titulo"], style={"fontSize": "22px"}),
-        html.P(decision["detalle"], style={"fontSize": "17px"}),
+        html.H3(decision["titulo"], style={"fontSize": "20px"}),
+        html.P(decision["detalle"], style={"fontSize": "16px"}),
         html.Hr(),
         html.P(
             "Validacion estadistica de Hardy: "
             + ("compatible" if decision["hardy_valido"] else "no validada"),
-            style={"fontSize": "17px"}
+            style={"fontSize": "16px"}
         ),
         html.P(
             "Consenso en el escenario: "
             + ("si" if decision["consenso"] else "no"),
-            style={"fontSize": "17px"}
+            style={"fontSize": "16px"}
         ),
         html.P(
             f"Bit recibido por A: {bit_a}; bit recibido por B: {bit_b}.",
-            style={"fontSize": "17px"}
+            style={"fontSize": "16px"}
         )
     ])
 
