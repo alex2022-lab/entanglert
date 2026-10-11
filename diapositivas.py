@@ -738,7 +738,7 @@ app.layout = html.Div(
                             className="slide-inner cover-content",
                             children=[
                                 html.Div(
-                                    "SIMULACION CUANTICA · SISTEMAS DISTRIBUIDOS",
+                                    "SIMULACIÓN CUÁNTICA · SISTEMAS DISTRIBUIDOS",
                                     className="cover-kicker"
                                 ),
                                 html.H1(
@@ -750,7 +750,7 @@ app.layout = html.Div(
                                     className="cover-subtitle"
                                 ),
                                 html.P(
-                                    "Explora una red de tres nodos, desafia la comunicacion con mensajes contradictorios y examina las correlaciones de Hardy en busca de condiciones que permitan verificar la consistencia del sistema.",
+                                    "Explora una red de tres nodos, desafía la comunicación con mensajes contradictorios y examina las correlaciones de Hardy en busca de condiciones que permitan verificar la consistencia del sistema.",
                                     style={
                                         "maxWidth": "950px",
                                         "margin": "35px auto",
@@ -761,7 +761,7 @@ app.layout = html.Div(
                                     }
                                 ),
                                 html.P(
-                                    "Usa la flecha derecha para comenzar.",
+                                    "¡Usa la flecha derecha para comenzar!",
                                     style={
                                         "marginTop": "45px",
                                         "color": "#64748b",
@@ -785,7 +785,7 @@ app.layout = html.Div(
                             children=[
                                 html.H2("Preparemos la red: Comportamiento de C"),
                                 html.P(
-                                    "Define si el nodo C enviara mensajes consistentes o si intentara enganar a la red.",
+                                    "Define si el nodo C enviará mensajes consistentes o si intentará engañar a la red.",
                                     className="section-description"
                                 ),
                                 html.Div(
@@ -797,18 +797,18 @@ app.layout = html.Div(
                                             style={"fontSize": "18px", "padding": "20px"},
                                             children=[
                                                 html.Label(
-                                                    "¿C dira la verdad o enviara mensajes contradictorios?",
+                                                    "¿C dirá la verdad o enviará mensajes contradictorios?",
                                                     style={"fontWeight": "700", "display": "block", "marginBottom": "12px", "fontSize": "20px"}
                                                 ),
                                                 dcc.RadioItems(
                                                     id="modo-c",
                                                     options=[
                                                         {
-                                                            "label": " C se comporta correctamente (envia el mismo mensaje)",
+                                                            "label": " C se comporta correctamente (envía el mismo mensaje)",
                                                             "value": "honesto"
                                                         },
                                                         {
-                                                            "label": " C intenta enganar (envia mensajes contradictorios)",
+                                                            "label": " C intenta engañar (envía mensajes contradictorios)",
                                                             "value": "bizantino"
                                                         }
                                                     ],
@@ -824,7 +824,7 @@ app.layout = html.Div(
                                         html.Div(
                                             style={"marginTop": "20px"},
                                             children=[
-                                                html.H4("Previsualizacion del escenario", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
+                                                html.H4("Previsualización del escenario", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
                                                 html.Div(
                                                     id="live-preview-panel-1",
                                                     children="Selecciona el comportamiento para previsualizar los nodos.",
@@ -836,7 +836,7 @@ app.layout = html.Div(
                                             className="notice",
                                             style={"marginTop": "20px", "fontSize": "16px", "padding": "18px"},
                                             children=(
-                                                "Capa clasica: Gestiona los mensajes enviados por los nodos y permite la deteccion directa de contradicciones."
+                                                "Capa clásica: Gestiona los mensajes enviados por los nodos y permite la detección directa de contradicciones."
                                             )
                                         )
                                     ]
@@ -890,7 +890,7 @@ app.layout = html.Div(
                                         html.Div(
                                             style={"marginTop": "20px"},
                                             children=[
-                                                html.H4("Previsualizacion del escenario", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
+                                                html.H4("Previsualización del escenario", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
                                                 html.Div(
                                                     id="live-preview-panel-2",
                                                     children="Selecciona el mensaje para previsualizar los nodos.",
@@ -1009,7 +1009,7 @@ app.layout = html.Div(
                                                 ),
                                                 html.Div(
                                                     children=[
-                                                        html.H4("Mensajes clasicos", style={"margin": "0 0 6px 0", "fontSize": "17px"}),
+                                                        html.H4("Mensajes clásicos", style={"margin": "0 0 6px 0", "fontSize": "17px"}),
                                                         html.Div(
                                                             id="message-panel",
                                                             children="Ejecuta el experimento.",
@@ -1106,7 +1106,7 @@ app.layout = html.Div(
                                             children=[
                                                 html.H3("Circuitos Cuánticos de Qiskit", style={"fontSize": "21px", "marginBottom": "8px"}),
                                                 html.Label(
-                                                    "Configuracion de medicion de Hardy",
+                                                    "Configuración de medición de Hardy",
                                                     style={"fontSize": "15px", "fontWeight": "600"}
                                                 ),
                                                 dcc.Dropdown(
@@ -1185,23 +1185,23 @@ app.layout = html.Div(
                                     className="card",
                                     style={"padding": "35px"},
                                     children=[
-                                        html.H3("Decision del escenario", style={"fontSize": "26px", "marginBottom": "20px"}),
+                                        html.H3("Decisión del escenario", style={"fontSize": "26px", "marginBottom": "20px"}),
                                         html.Div(
                                             id="protocol-status",
                                             className="notice",
                                             style={"fontSize": "18px", "padding": "22px"},
                                             children=(
                                                 "Ejecuta el experimento para "
-                                                "evaluar la transmision."
+                                                "evaluar la transmisión."
                                             )
                                         ),
                                         html.P(
-                                            "Limite cientifico: este prototipo "
-                                            "no reproduce todavia el protocolo "
-                                            "completo del articulo. La "
-                                            "contradiccion se detecta comparando "
-                                            "mensajes clasicos; Hardy no "
-                                            "identifica automaticamente al "
+                                            "Límite científico: este prototipo "
+                                            "no reproduce todavía el protocolo "
+                                            "completo del artículo. La "
+                                            "contradicción se detecta comparando "
+                                            "mensajes clásicos; Hardy no "
+                                            "identifica automáticamente al "
                                             "responsable.",
                                             style={
                                                 "fontSize": "16px",
@@ -1294,10 +1294,10 @@ def actualizar_previsualizacion_clasica(modo, bit_c):
     if mensajes["contradiccion"]:
         contenido = [
             html.Div(
-                "Escenario de engano (Bizantino activo)",
+                "Escenario de engaño (Bizantino activo)",
                 style={"color": "#dc2626", "fontWeight": "bold", "marginBottom": "8px", "fontSize": "17px"}
             ),
-            html.P(f"- Comandante C envia el mensaje original: {bit_c}", style={"margin": "4px 0", "fontSize": "15px"}),
+            html.P(f"- Comandante C envía el mensaje original: {bit_c}", style={"margin": "4px 0", "fontSize": "15px"}),
             html.P(f"- Participante A recibe: {bit_a}", style={"margin": "4px 0", "color": "#1e293b", "fontSize": "15px"}),
             html.P(f"- Participante B recibe: {bit_b} (Contradictorio)", style={"margin": "4px 0", "color": "#dc2626", "fontWeight": "600", "fontSize": "15px"})
         ]
@@ -1307,7 +1307,7 @@ def actualizar_previsualizacion_clasica(modo, bit_c):
                 "Escenario consistente (Honesto)",
                 style={"color": "#166534", "fontWeight": "bold", "marginBottom": "8px", "fontSize": "17px"}
             ),
-            html.P(f"- Comandante C envia el mensaje original: {bit_c}", style={"margin": "4px 0", "fontSize": "15px"}),
+            html.P(f"- Comandante C envía el mensaje original: {bit_c}", style={"margin": "4px 0", "fontSize": "15px"}),
             html.P(f"- Participante A recibe: {bit_a}", style={"margin": "4px 0", "color": "#166534", "fontSize": "15px"}),
             html.P(f"- Participante B recibe: {bit_b} (Coherente)", style={"margin": "4px 0", "color": "#166534", "fontSize": "15px"})
         ]
@@ -1417,10 +1417,10 @@ def ejecutar_protocolo(
             output="text",
             fold=-1
         ).single_string()
-        + "\n\nResultados de la medicion de Bell:\n"
+        + "\n\nResultados de la medición de Bell:\n"
         + str(counts_swap)
         + "\n\nCircuito auxiliar: no implementa el proyector "
-        "M especifico del articulo."
+        "M específico del artículo."
     )
 
     # C. Métricas
@@ -1449,14 +1449,14 @@ def ejecutar_protocolo(
     if validacion["valido"]:
         estado_hardy = (
             "Compatible con el criterio exploratorio de Hardy.\n"
-            "Las tres primeras frecuencias son suficientemente pequenas "
-            "segun el umbral utilizado y la ultima es positiva."
+            "Las tres primeras frecuencias son suficientemente pequeñas "
+            "según el umbral utilizado y la última es positiva."
         )
         clase_hardy = "notice notice-ok"
     else:
         estado_hardy = (
             "Las frecuencias no cumplen el criterio exploratorio de Hardy. "
-            "Esto no equivale por si solo a una prueba formal del protocolo."
+            "Esto no equivale por sí solo a una prueba formal del protocolo."
         )
         clase_hardy = "notice notice-warn"
 
@@ -1469,7 +1469,7 @@ def ejecutar_protocolo(
         estado_mensaje = html.Div(
             [
                 html.H4(
-                    "Contradiccion clasica introducida",
+                    "Contradicción clásica introducida",
                     style={"color": "#b91c1c", "margin": "0 0 4px 0", "fontSize": "15px"}
                 ),
                 html.P(f"C -> A: bit {bit_a}", style={"margin": "2px 0", "fontSize": "14px"}),
@@ -1484,7 +1484,7 @@ def ejecutar_protocolo(
         estado_mensaje = html.Div(
             [
                 html.H4(
-                    "Mensajes clasicos consistentes",
+                    "Mensajes clásicos consistentes",
                     style={"color": "#166534", "margin": "0 0 4px 0", "fontSize": "15px"}
                 ),
                 html.P(f"C -> A: bit {bit_a}", style={"margin": "2px 0", "fontSize": "14px"}),
@@ -1501,7 +1501,7 @@ def ejecutar_protocolo(
         html.P(decision["detalle"], style={"fontSize": "16px"}),
         html.Hr(),
         html.P(
-            "Validacion estadistica de Hardy: "
+            "Validación estadística de Hardy: "
             + ("compatible" if decision["hardy_valido"] else "no validada"),
             style={"fontSize": "16px"}
         ),
