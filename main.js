@@ -1,21 +1,58 @@
 import * as hardy from 'hardy';
 
 // ============================================================
+// Navegación del deck (presentación en 4 diapositivas)
+// ============================================================
+
+const deck = document.getElementById('deck-container');
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
+const slideCounter = document.getElementById('slide-counter');
+const TOTAL_SLIDES = 4;
+let slideActual = 0;
+
+function actualizarDeck() {
+  deck.style.transform = 'translateX(-' + (slideActual * 100) + 'vw)';
+  btnPrev.disabled = slideActual === 0;
+  btnNext.disabled = slideActual === TOTAL_SLIDES - 1;
+  slideCounter.textContent =
+    String(slideActual + 1).padStart(2, '0') +
+    ' / ' +
+    String(TOTAL_SLIDES).padStart(2, '0');
+}
+
+btnPrev.addEventListener('click', () => {
+  if (slideActual > 0) {
+    slideActual -= 1;
+    actualizarDeck();
+  }
+});
+
+btnNext.addEventListener('click', () => {
+  if (slideActual < TOTAL_SLIDES - 1) {
+    slideActual += 1;
+    actualizarDeck();
+  }
+});
+
+actualizarDeck();
+
+// ============================================================
 // Datos de la red distribuida
 // ============================================================
 
 const NODOS = [
   {
     id: 'A', x: 130, y: 190, label: 'A', clase: 'participant',
-    descripcion: 'Participante A. En este prototipo visualiza el mensaje recibido de C y participa en la representación de la red distribuida.',
+    descripcion: 'Participante A. Recibe el mensaje de C.',
   },
   {
     id: 'B', x: 390, y: 190, label: 'B', clase: 'participant',
-    descripcion: 'Participante B. Recibe el mensaje de C. El panel clásico permite comprobar si el mensaje recibido coincide con el de A.',
+    descripcion: 'Participante B. Recibe el mensaje de C.',
   },
   {
     id: 'C', x: 260, y: 45, label: 'C', clase: 'adversary',
-    descripcion: 'General comandante C. En el escenario honesto envía el mismo bit a A y B. En el escenario bizantino, el simulador introduce mensajes contradictorios.',
+    descripcion: 'Comandante C. Puede enviar mensajes consistentes o contradictorios.',
   },
 ];
 
@@ -23,17 +60,17 @@ const ARISTAS = [
   {
     id: 'AB', source: 'A', target: 'B', label: 'Canal clásico',
     clase: 'classic-edge', dy: 16,
-    descripcion: 'Canal clásico A-B. Puede representar el intercambio de información auxiliar entre participantes.',
+    descripcion: 'Canal clásico de comunicación A-B.',
   },
   {
     id: 'AC', source: 'A', target: 'C', label: 'Clásico / cuántico',
     clase: 'quantum-edge', dy: -8,
-    descripcion: 'Conexión A-C. La interfaz representa una conexión distribuida; no simula por sí sola un canal cuántico físico.',
+    descripcion: 'Conexión representada entre A y C.',
   },
   {
     id: 'BC', source: 'B', target: 'C', label: 'Clásico / cuántico',
     clase: 'quantum-edge', dy: -8,
-    descripcion: 'Conexión B-C. La interfaz representa una conexión distribuida. El experimento de Hardy se ejecuta por separado en esta versión.',
+    descripcion: 'Conexión representada entre B y C.',
   },
 ];
 
@@ -313,7 +350,7 @@ function renderMetricas(pruebas, qMax) {
   tarjetas.push({
     titulo: 'q máximo teórico',
     valor: (qMax * 100).toFixed(3) + '%',
-    desc: 'Valor ideal del estado de Hardy',
+    desc: 'Valor ideal asociado al estado de Hardy',
   });
 
   for (const t of tarjetas) {
@@ -344,7 +381,7 @@ function renderGrafico(pruebas) {
   const colores = ['#dc2626', '#f59e0b', '#f59e0b', '#2563eb'];
   const valores = pruebas.map((p) => p.probabilidad);
   const maxVal = Math.max(...valores);
-  const ref = Math.max(0.12, maxVal * 1.35);
+  const ref = Math.max(0.12, maxVal * 1.4);
 
   pruebas.forEach((p, i) => {
     const fila = document.createElement('div');
@@ -381,25 +418,16 @@ function renderHardyStatus(validacion) {
 
   if (validacion.valido) {
     status.textContent =
-      'RESULTADO: compatible con las condiciones de Hardy.\n\n' +
-      'Las tres probabilidades que deberían anularse son pequeñas bajo el ' +
-      'criterio exploratorio utilizado, y U-U presenta una probabilidad ' +
-      'positiva.\n\n' +
-      'Esto comprueba el comportamiento esperado del estado simulado; no ' +
-      'demuestra por sí solo un protocolo bizantino completo.';
+      'Compatible con el criterio exploratorio de Hardy.\n' +
+      'Las tres primeras frecuencias son suficientemente pequeñas ' +
+      'según el umbral utilizado y la última es positiva.';
     status.className = 'notice notice-ok';
   } else {
     status.textContent =
-      'RESULTADO: las frecuencias no cumplen claramente el criterio ' +
-      'exploratorio de Hardy.\n\n' +
-      'Revisa los circuitos, las bases y el número de repeticiones. Este ' +
-      'criterio no sustituye un análisis estadístico formal.';
+      'Las frecuencias no cumplen el criterio exploratorio de Hardy. ' +
+      'Esto no equivale por sí solo a una prueba formal del protocolo.';
     status.className = 'notice notice-warn';
   }
-}
-
-function baseDe(bit) {
-  return bit === 0 ? 'U' : 'D';
 }
 
 function renderMensajes(mensajes) {
@@ -418,31 +446,23 @@ function renderMensajes(mensajes) {
   }
 
   const pA = document.createElement('p');
-  pA.textContent = 'C → A: bit ' + mensajes.bit_a +
-    ' (base ' + baseDe(mensajes.bit_a) + ')';
+  pA.textContent = 'C → A: bit ' + mensajes.bit_a;
 
   const pB = document.createElement('p');
-  pB.textContent = 'C → B: bit ' + mensajes.bit_b +
-    ' (base ' + baseDe(mensajes.bit_b) + ')';
+  pB.textContent = 'C → B: bit ' + mensajes.bit_b;
 
   panel.appendChild(titulo);
   panel.appendChild(pA);
   panel.appendChild(pB);
 
+  const nota = document.createElement('p');
   if (mensajes.contradiccion) {
-    const p1 = document.createElement('p');
-    p1.textContent = 'A y B recibieron valores distintos. El simulador ' +
-      'conoce la contradicción porque la introdujo directamente en los mensajes.';
-    const p2 = document.createElement('p');
-    p2.textContent = 'Esto NO significa que Hardy haya detectado al nodo C.';
-    panel.appendChild(p1);
-    panel.appendChild(p2);
+    nota.textContent = 'A y B reciben valores distintos. La discrepancia ' +
+      'se conoce porque el escenario clásico la genera.';
   } else {
-    const p = document.createElement('p');
-    p.textContent = 'Los dos participantes reciben el mismo bit en el ' +
-      'escenario clásico configurado.';
-    panel.appendChild(p);
+    nota.textContent = 'Los dos participantes reciben el mismo bit.';
   }
+  panel.appendChild(nota);
 }
 
 function renderDecision(decision, mensajes) {
@@ -466,9 +486,8 @@ function renderDecision(decision, mensajes) {
     (decision.consenso ? 'sí' : 'no');
 
   const pMsgs = document.createElement('p');
-  pMsgs.textContent = 'Mensaje enviado a A: ' + mensajes.bit_a +
-    ' (' + baseDe(mensajes.bit_a) + '); mensaje enviado a B: ' +
-    mensajes.bit_b + ' (' + baseDe(mensajes.bit_b) + ').';
+  pMsgs.textContent = 'Bit recibido por A: ' + mensajes.bit_a +
+    '; bit recibido por B: ' + mensajes.bit_b + '.';
 
   panel.appendChild(h3);
   panel.appendChild(pDetalle);

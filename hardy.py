@@ -185,9 +185,7 @@ def decidir_protocolo(pruebas, mensajes, shots):
             "clase": "notice notice-warn",
             "detalle": (
                 "Las frecuencias observadas no cumplen el criterio "
-                "exploratorio de Hardy. El prototipo no acepta la "
-                "transmisión como validada y no concluye quién es "
-                "bizantino."
+                "exploratorio de Hardy. No se valida la transmisión."
             ),
             "consenso": False,
             "hardy_valido": False,
@@ -198,12 +196,10 @@ def decidir_protocolo(pruebas, mensajes, shots):
             "titulo": "INCONSISTENCIA ENTRE MENSAJES",
             "clase": "notice notice-warn",
             "detalle": (
-                f"A recibe el bit {mensajes['bit_a']} y B recibe el bit "
-                f"{mensajes['bit_b']}. Las estadísticas de Hardy pasan "
-                "el criterio exploratorio, pero los mensajes no coinciden. "
-                "La inconsistencia se detecta al comparar los mensajes "
-                "clásicos; esto no demuestra por sí solo que Hardy haya "
-                "identificado a C como el responsable."
+                f"A recibe {mensajes['bit_a']} y B recibe "
+                f"{mensajes['bit_b']}. Los mensajes no coinciden. "
+                "La contradicción se detecta comparando los mensajes "
+                "clásicos, no mediante Hardy por sí solo."
             ),
             "consenso": False,
             "hardy_valido": True,
@@ -213,9 +209,8 @@ def decidir_protocolo(pruebas, mensajes, shots):
         "titulo": "CONSENSO SIMULADO",
         "clase": "notice notice-ok",
         "detalle": (
-            f"A y B reciben el mismo bit ({mensajes['bit_a']}) y las "
-            "estadísticas de Hardy pasan el criterio exploratorio. "
-            "El escenario didáctico acepta el mensaje y registra consenso."
+            f"A y B reciben el mismo bit ({mensajes['bit_a']}) y "
+            "las estadísticas de Hardy pasan el criterio exploratorio."
         ),
         "consenso": True,
         "hardy_valido": True,
@@ -274,10 +269,8 @@ def ejecutar_protocolo(backend, shots, par, modo, bit_c):
         _texto(circuito_swap)
         + "\n\nResultados de la medición de Bell:\n"
         + str(counts_swap)
-        + "\n\nInterpretación: se preparan dos pares de Bell y se mide "
-        "el par central. Esta es una demostración auxiliar de intercambio "
-        "de entrelazamiento; no implementa el proyector M específico del "
-        "artículo."
+        + "\n\nCircuito auxiliar: no implementa el proyector M "
+        "específico del artículo."
     )
 
     mensajes = simular_mensajes(bit_c, modo)

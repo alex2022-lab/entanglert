@@ -1,74 +1,117 @@
-<div class="app-shell">
-  <h1>E N T A N G L E R T</h1>
-  <p class="subtitle">Correlaciones de Hardy y acuerdo bizantino</p>
+<div class="deck-viewport">
+  <button id="btn-prev" class="nav-arrow nav-left" disabled title="Diapositiva anterior" aria-label="Anterior">&lt;</button>
+  <button id="btn-next" class="nav-arrow nav-right" title="Siguiente diapositiva" aria-label="Siguiente">&gt;</button>
+  <div id="slide-counter" class="slide-counter">01 / 04</div>
 
-  <section class="card">
-    <h3>Configuración experimental</h3>
-    <p class="muted">Selecciona un escenario clásico y ejecuta las mediciones cuánticas.</p>
-    <div class="controls">
-      <div class="control">
-        <label class="control-label">Comportamiento de C</label>
-        <label class="radio"><input type="radio" name="modo-c" value="honesto" checked> Mensaje consistente</label>
-        <label class="radio"><input type="radio" name="modo-c" value="bizantino"> Mensajes contradictorios</label>
+  <div id="deck-container" class="deck-container" style="transform: translateX(0vw)">
+    <!-- ================================================================
+         DIAPOSITIVA 1: PORTADA
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner cover-content">
+        <div class="cover-kicker">SIMULACIÓN CUÁNTICA · SISTEMAS DISTRIBUIDOS</div>
+        <h1 class="cover-title">E N T A N G L E R T</h1>
+        <p class="cover-subtitle">Correlaciones de Hardy y acuerdo bizantino</p>
+        <p class="cover-description">Una exploración interactiva de la relación entre mediciones cuánticas y consistencia de mensajes en una red distribuida.</p>
+        <p class="cover-hint">Usa la flecha derecha para comenzar →</p>
       </div>
-
-      <div class="control">
-        <label class="control-label">Bit enviado por C</label>
-        <label class="radio"><input type="radio" name="bit-c" value="0" checked> 0</label>
-        <label class="radio"><input type="radio" name="bit-c" value="1"> 1</label>
-      </div>
-
-      <div class="control">
-        <label class="control-label" for="shots">Repeticiones cuánticas</label>
-        <input type="range" id="shots" min="500" max="10000" step="500" value="3000">
-        <div class="range-labels"><span>500</span><span>5k</span><span>10k</span></div>
-        <div class="range-value" id="shots-value">3000</div>
-      </div>
-
-      <div class="control">
-        <label class="control-label">Experimento</label>
-        <button id="run" class="run-button">▶ Ejecutar experimento</button>
-      </div>
-    </div>
-  </section>
-
-  <div class="layout">
-    <section class="card">
-      <h3>1. Red distribuida</h3>
-      <div id="network" class="network-container"></div>
-      <div id="node-details" class="node-details">Selecciona un nodo o canal.</div>
-      <h4>Mensajes clásicos</h4>
-      <div id="message-panel" class="msg-panel">Ejecuta el experimento.</div>
     </section>
 
-    <section class="card">
-      <h3>2. Circuito de Hardy</h3>
-      <label class="control-label" for="circuit-pair">Configuración de medición</label>
-      <select id="circuit-pair">
-        <option value="DD">D - D</option>
-        <option value="DU">D - U</option>
-        <option value="UD">U - D</option>
-        <option value="UU" selected>U - U</option>
-      </select>
-      <pre id="circuit-text" class="code">Ejecuta el experimento para ver el circuito.</pre>
-      <h4>Intercambio de entrelazamiento</h4>
-      <pre id="swap-text" class="code">Esperando ejecución...</pre>
+    <!-- ================================================================
+         DIAPOSITIVA 2: CONFIGURACIÓN
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner app-shell">
+        <h2>Configuración experimental</h2>
+        <p class="section-description">Configura el escenario clásico y el número de mediciones cuánticas.</p>
+
+        <div class="card">
+          <div class="controls">
+            <div class="control">
+              <label class="control-label">Comportamiento de C</label>
+              <label class="radio"><input type="radio" name="modo-c" value="honesto" checked> Mensaje consistente</label>
+              <label class="radio"><input type="radio" name="modo-c" value="bizantino"> Mensajes contradictorios</label>
+            </div>
+
+            <div class="control">
+              <label class="control-label">Bit enviado por C</label>
+              <label class="radio"><input type="radio" name="bit-c" value="0" checked> 0</label>
+              <label class="radio"><input type="radio" name="bit-c" value="1"> 1</label>
+            </div>
+
+            <div class="control">
+              <label class="control-label" for="shots">Repeticiones cuánticas (shots)</label>
+              <input type="range" id="shots" min="500" max="10000" step="500" value="3000">
+              <div class="range-labels"><span>500</span><span>5k</span><span>10k</span></div>
+              <div class="range-value" id="shots-value">3000</div>
+            </div>
+
+            <div class="control">
+              <label class="control-label">Ejecutar</label>
+              <p class="run-note">Inicia las mediciones y actualiza los resultados.</p>
+              <button id="run" class="run-button">▶ Ejecutar experimento</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice">Nota: el escenario bizantino introduce una contradicción clásica de forma controlada. Las mediciones de Hardy se ejecutan como experimentos cuánticos independientes.</div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         DIAPOSITIVA 3: RED DISTRIBUIDA
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner app-shell">
+        <h2>Red distribuida</h2>
+        <p class="section-description">Selecciona un nodo o una conexión para ver su descripción.</p>
+
+        <div class="card">
+          <div id="network" class="network-container"></div>
+          <div id="node-details" class="node-details">Selecciona un nodo o canal.</div>
+          <h4>Mensajes clásicos</h4>
+          <div id="message-panel" class="msg-panel">Ejecuta el experimento.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         DIAPOSITIVA 4: RESULTADOS
+         ================================================================ -->
+    <section class="slide-section">
+      <div class="slide-inner app-shell">
+        <h2>Circuitos y resultados</h2>
+        <p class="section-description">Frecuencias de Hardy, circuitos cuánticos y evaluación del escenario.</p>
+
+        <div class="layout">
+          <div class="card">
+            <h3>Correlaciones de Hardy</h3>
+            <div id="hardy-metrics" class="metric-row"></div>
+            <div id="hardy-chart" class="chart"></div>
+            <div id="hardy-status" class="notice">Ejecuta el experimento para evaluar las correlaciones.</div>
+          </div>
+
+          <div class="card">
+            <h3>Circuito de Hardy</h3>
+            <label class="control-label" for="circuit-pair">Configuración de medición</label>
+            <select id="circuit-pair">
+              <option value="DD">D - D</option>
+              <option value="DU">D - U</option>
+              <option value="UD">U - D</option>
+              <option value="UU" selected>U - U</option>
+            </select>
+            <pre id="circuit-text" class="code">Ejecuta el experimento para ver el circuito.</pre>
+            <h4>Intercambio de entrelazamiento</h4>
+            <pre id="swap-text" class="code">Esperando ejecución...</pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Decisión del escenario</h3>
+          <div id="protocol-status" class="notice">Ejecuta el experimento para evaluar la transmisión.</div>
+          <p class="limit-note">Límite científico: este prototipo no reproduce todavía el protocolo completo del artículo. La contradicción se detecta comparando mensajes clásicos; Hardy no identifica automáticamente al responsable.</p>
+        </div>
+      </div>
     </section>
   </div>
-
-  <section class="card">
-    <h3>3. Verificación de las correlaciones de Hardy</h3>
-    <p class="muted">Las tres primeras condiciones deben tener probabilidad teórica cero. La condición U-U debe tener probabilidad positiva.</p>
-    <div id="hardy-metrics" class="metric-row"></div>
-    <div id="hardy-chart" class="chart"></div>
-    <div id="hardy-status" class="notice">Ejecuta el experimento para evaluar las correlaciones.</div>
-  </section>
-
-  <section class="card">
-    <h3>4. Decisión del protocolo bizantino</h3>
-    <p class="muted">La decisión combina la validación estadística de Hardy con la comparación de los bits recibidos por A y B.</p>
-    <div id="protocol-status" class="notice">Ejecuta el experimento para evaluar la transmisión y el consenso.</div>
-    <p class="muted">Límite científico: este es un modelo didáctico. La contradicción se introduce en el escenario clásico; Hardy no identifica automáticamente al mentiroso. El intercambio de entrelazamiento mostrado arriba es auxiliar y no implementa el proyector M específico del artículo ni todo el protocolo device-independent.</p>
-    <p class="muted">Interpretación: si Hardy no pasa, la transmisión queda sin validar. Si Hardy pasa pero los bits difieren, se marca una inconsistencia. Si Hardy pasa y los bits coinciden, se registra consenso en este escenario.</p>
-  </section>
 </div>
